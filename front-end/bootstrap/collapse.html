@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="../assets/plugins/bootstrap-3.3.7/css/bootstrap.min.css">
+</head>
+<body>
+<a class="btn btn-primary" role="button" data-toggle="collapse" href="#collapseExample" aria-expanded="false"
+   aria-controls="collapseExample">
+    Link with href
+</a>
+<div class="collapse" id="collapseExample">
+    <div class="well">
+        ...
+    </div>
+</div>
+
+<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+    <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="collapseListGroupHeading1">
+            <h4 class="panel-title">
+                <a class="" role="button" data-toggle="collapse" href="#collapseListGroup1" aria-expanded="true"
+                   aria-controls="collapseListGroup1">
+                    Collapsible list group
+                </a>
+            </h4>
+        </div>
+        <div id="collapseListGroup1" class="panel-collapse collapse in" role="tabpanel"
+             aria-labelledby="collapseListGroupHeading1" aria-expanded="true" style="">
+            <ul class="list-group">
+                <li class="list-group-item">Bootply</li>
+                <li class="list-group-item">One itmus ac facilin</li>
+                <li class="list-group-item">Second eros</li>
+            </ul>
+        </div>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="collapseListGroupHeading2">
+            <h4 class="panel-title">
+                <a class="" role="button" data-toggle="collapse" href="#collapseListGroup2" aria-expanded="true"
+                   aria-controls="collapseListGroup1">
+                    Collapsible list group
+                </a>
+            </h4>
+        </div>
+        <div id="collapseListGroup2" class="panel-collapse collapse in" role="tabpanel"
+             aria-labelledby="collapseListGroupHeading1" aria-expanded="true" style="">
+            <ul class="list-group">
+                <li class="list-group-item">Bootply</li>
+                <li class="list-group-item">One itmus ac facilin</li>
+                <li class="list-group-item">Second eros</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+
+<!--<div class="panel panel-default">
+    <div class="panel-heading" role="tab">
+        <h4 class="panel-title">
+            <a class="" role="button" data-toggle="collapse" href="#group1" aria-expanded="false"
+               aria-controls="group1">
+                用户管理
+            </a>
+        </h4>
+    </div>
+    <div id="group1" class="panel-collapse collapse" aria-expanded="true">
+        <ul class="nav nav-sidebar list-group">
+            <li class="list-group-item"><a href="#">list</a></li>
+            <li class="list-group-item"><a href="#">form</a></li>
+        </ul>
+    </div>
+</div>-->
+<div class="panel-group">
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h4 class="panel-title">
+                <a class="" data-toggle="collapse" href="#group1">用户管理</a>
+            </h4>
+        </div>
+        <div id="group1" class="collapse">
+            <ul class="list-group nav">
+                <li class="list-group-item"><a href="#">aaa</a></li>
+                <li class="list-group-item"><a href="#">bbb</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h4 class="panel-title">
+                <a class="" data-toggle="collapse" href="#group2">用户管理</a>
+            </h4>
+        </div>
+        <div id="group2" class="collapse">
+            <ul class="list-group nav">
+                <li class="list-group-item"><a href="#">aaa</a></li>
+                <li class="list-group-item"><a href="#">bbb</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<script src="../assets/plugins/jquery-3.2.1/jquery-3.2.1.min.js"></script>
+<script src="../assets/plugins/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+</body>
+</html>

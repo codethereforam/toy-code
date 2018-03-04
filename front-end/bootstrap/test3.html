@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>test3</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="../assets/plugins/bootstrap-3.3.7/css/bootstrap.min.css">
+    <script src="../assets/plugins/jquery-3.2.1/jquery-3.2.1.min.js"></script>
+    <script src="../assets/plugins/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <style>
+        .glyphicon-user {
+            color: #4cae4c;
+            font-size: 50px;
+        }
+    </style>
+</head>
+<body>
+<ul class="nav nav-tabs">
+    <li class="active"><a href="#">baidu</a></li>
+    <li><a href="#">baidu</a></li>
+    <li><a href="#">baidu</a></li>
+</ul>
+<br/>
+<ul class="nav nav-pills">
+    <li class="active"><a href="#">baidu</a></li>
+    <li><a href="#">baidu</a></li>
+    <li><a href="#">baidu</a></li>
+</ul>
+<br/>
+<ul class="nav nav-pills nav-stacked">
+    <li class="active"><a href="#">baidu</a></li>
+    <li><a href="#">baidu</a></li>
+    <li><a href="#">baidu</a></li>
+</ul>
+<br/>
+<div class="dropdown">
+    <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
+        menu
+        <span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu">
+        <li><a href="https://www.baidu.com">baidu</a></li>
+        <li><a href="https://www.baidu.com">baidu</a></li>
+        <li><a href="https://www.baidu.com">baidu</a></li>
+    </ul>
+</div>
+<form method="post" action="#" class="">
+    <div class="form-group has-success">
+        <span class="glyphicon glyphicon-user"></span>
+        <label class="control-label" for="username"></label>
+        <input id="username" name="username"  placeholder="非空"/>
+    </div>
+    <div class="input-group">
+        <span class="input-group-addon">password</span>
+        <input id="password" name="password" class="form-control"  placeholder="非空"/>
+    </div>
+    <div class="form-group">
+        <label for="sex">sex</label>
+        <select id="sex" name="sex" class="form-control">
+            <option value="1">male</option>
+            <option value="2">female</option>
+            <option value="0">secret</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="intro">intro</label>
+        <textarea id="intro" name="intro" class="form-control" cols="30" rows="10"></textarea>
+    </div>
+    <button class="btn btn-default btn-lg active" type="button">
+    <span class="glyphicon glyphicon-ok"></span>
+        submit
+    </button>
+    <a class="btn btn-success btn-lg active">reset</a>
+</form>
+</body>
+</html>
