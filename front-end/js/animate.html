@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>animate</title>
+    <style>
+        #div2 {
+            height: 100px;
+            width: 100px;
+            background-color: red;
+            position: relative;
+        }
+
+        #barFrame {
+            background-color: #ddefec;
+            height: 30px;
+            width: 100%;
+        }
+
+        #bar {
+            background-color: green;
+            height: 30px;
+            width: 10%;
+        }
+    </style>
+</head>
+<body>
+<button id="stopTimerBtn" type="button">stop timer</button>
+<p id="watch"></p>
+
+<div id="div2"></div>
+
+<p>
+    <button id="ctrlBarBtn" type="button">control bar</button>
+</p>
+<div id="barFrame">
+    <div id="bar"></div>
+</div>
+
+<div id="div1"></div>
+
+<script>
+    var bar = document.querySelector("#bar");
+    // progress bar
+    document.querySelector("#ctrlBarBtn").addEventListener("click", function () {
+        var width = 10;
+        var moveBar = setInterval(function () {
+            if (++width === 100) {
+                clearInterval(moveBar);
+            }
+            bar.style.width = width + "%";
+        }, 20);
+    });
+
+    // move div block
+    var div2 = document.querySelector("#div2");
+    var moveBlock = setInterval(function () {
+        var div2CoordinateX = parseInt(window.getComputedStyle(div2).getPropertyValue("left"));
+        if (div2CoordinateX === 300) {
+            clearInterval(moveBlock);
+        }
+        div2.style.left = div2CoordinateX + 2 + "px";
+    }, 1);
+
+    // watch
+    refreshTime();
+    var watchInterval = setInterval(function () {
+        refreshTime();
+    }, 1000);
+
+    function refreshTime() {
+        document.querySelector("#watch").innerHTML = new Date().toLocaleTimeString();
+    }
+
+    document.querySelector("#stopTimerBtn").onclick = function () {
+        clearInterval(watchInterval);
+    };
+
+    // new paragraph
+    var count = 0;
+    var myInterval = setInterval(function () {
+        var paragraph = document.createElement("p");
+        var node = document.createTextNode("a new paragraph" + ++count);
+        paragraph.appendChild(node);
+        document.querySelector("#div1").appendChild(paragraph);
+        if (count === 5) {
+            clearInterval(myInterval);
+        }
+    }, 200);
+</script>
+</body>
+</html>

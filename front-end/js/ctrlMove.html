@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>control move</title>
+    <style>
+        body {
+            background-image: url(../assets/image/profile.JPG);
+        }
+        #myDiv {
+            width: 50px;
+            height: 50px;
+            background-color: red;
+            position: relative;
+        }
+    </style>
+</head>
+<body>
+<div id="myDiv"></div>
+
+<script>
+    console.log(window);
+    var DirectionEnum = {
+        "UP": 1,
+        "DOWN": 2,
+        "LEFT": 3,
+        "RIGHT": 4
+    };
+    var divObj = document.querySelector("#myDiv");
+
+    var div = {
+        direction: DirectionEnum.RIGHT,
+        getCoordinateX: function () {
+            return parseInt(window.getComputedStyle(divObj).getPropertyValue("left"));
+        },
+        getCoordinateY: function () {
+            return parseInt(window.getComputedStyle(divObj).getPropertyValue("top"));
+        },
+        setCoordinateX: function (x) {
+            divObj.style.left = x + "px";
+        },
+        setCoordinateY: function (y) {
+            divObj.style.top = y + "px";
+        }
+    };
+
+    var move = setInterval(function () {
+        switch (div.direction) {
+            case DirectionEnum.UP:
+                div.setCoordinateY(div.getCoordinateY() - 1);
+                break;
+            case DirectionEnum.DOWN:
+                div.setCoordinateY(div.getCoordinateY() + 1);
+                break;
+            case DirectionEnum.LEFT:
+                div.setCoordinateX(div.getCoordinateX() - 1);
+                break;
+            case DirectionEnum.RIGHT:
+                div.setCoordinateX(div.getCoordinateX() + 1);
+                break;
+        }
+    }, 1);
+
+    document.addEventListener("keydown", function (ev) {
+        switch (ev.keyCode) {
+            case 38:
+                div.direction = DirectionEnum.UP;
+                break;
+            case 40:
+                div.direction = DirectionEnum.DOWN;
+                break;
+            case 37:
+                div.direction = DirectionEnum.LEFT;
+                break;
+            case 39:
+                div.direction = DirectionEnum.RIGHT;
+                break;
+            default:
+                clearInterval(move);
+        }
+    });
+</script>
+</body>
+</html>
