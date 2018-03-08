@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>vertical center</title>
+    <style>
+        .container {
+            height: 100px;
+            background-color: #9d9d9d;
+            margin: 10px;
+        }
+
+        #container1 {
+            display: flex;
+        }
+
+        #content1 {
+            margin: auto;
+        }
+
+        #container2{
+            position: relative;
+        }
+
+        #content2 {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+    </style>
+</head>
+<body>
+<div class="container" id="container1">
+    <div class="content" id="content1">hello world</div>
+</div>
+
+<div class="container" id="container2">
+    <div class="content" id="content2">hello world</div>
+</div>
+</body>
+</html>

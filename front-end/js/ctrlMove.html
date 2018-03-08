@@ -3,82 +3,108 @@
 <head>
     <meta charset="UTF-8">
     <title>control move</title>
-    <style>
-        body {
-            background-image: url(../assets/image/profile.JPG);
-        }
-        #myDiv {
-            width: 50px;
-            height: 50px;
-            background-color: red;
-            position: relative;
-        }
-    </style>
 </head>
 <body>
-<div id="myDiv"></div>
-
 <script>
-    console.log(window);
     var DirectionEnum = {
         "UP": 1,
         "DOWN": 2,
         "LEFT": 3,
-        "RIGHT": 4
-    };
-    var divObj = document.querySelector("#myDiv");
-
-    var div = {
-        direction: DirectionEnum.RIGHT,
-        getCoordinateX: function () {
-            return parseInt(window.getComputedStyle(divObj).getPropertyValue("left"));
-        },
-        getCoordinateY: function () {
-            return parseInt(window.getComputedStyle(divObj).getPropertyValue("top"));
-        },
-        setCoordinateX: function (x) {
-            divObj.style.left = x + "px";
-        },
-        setCoordinateY: function (y) {
-            divObj.style.top = y + "px";
-        }
+        "RIGHT": 4,
+        "STOP": 5
     };
 
-    var move = setInterval(function () {
-        switch (div.direction) {
-            case DirectionEnum.UP:
-                div.setCoordinateY(div.getCoordinateY() - 1);
-                break;
-            case DirectionEnum.DOWN:
-                div.setCoordinateY(div.getCoordinateY() + 1);
-                break;
-            case DirectionEnum.LEFT:
-                div.setCoordinateX(div.getCoordinateX() - 1);
-                break;
-            case DirectionEnum.RIGHT:
-                div.setCoordinateX(div.getCoordinateX() + 1);
-                break;
-        }
-    }, 1);
+    function Block(coordinateX, coordinateY, direction) {
+        this.coordinateX = coordinateX;
+        this.coordinateY = coordinateY;
+        this.direction = direction;
+        this.div = document.createElement("div");
+        this.init();
+    }
 
-    document.addEventListener("keydown", function (ev) {
-        switch (ev.keyCode) {
-            case 38:
-                div.direction = DirectionEnum.UP;
-                break;
-            case 40:
-                div.direction = DirectionEnum.DOWN;
-                break;
-            case 37:
-                div.direction = DirectionEnum.LEFT;
-                break;
-            case 39:
-                div.direction = DirectionEnum.RIGHT;
-                break;
-            default:
-                clearInterval(move);
+    Block.prototype = {
+        constructor: Block,
+        STEP: 1,
+        WIDTH: 50,
+        HEIGHT: 50,
+        init: function () {
+            this.div.style.width = this.WIDTH + "px";
+            this.div.style.height = this.HEIGHT + "px";
+            this.div.style.backgroundColor = "green";
+            this.div.style.position = "absolute";
+            this.updateLocation();
+            document.querySelector("body").appendChild(this.div);
+        },
+        updateLocation: function () {
+            this.div.style.left = this.coordinateX + "px";
+            this.div.style.top = this.coordinateY + "px";
+        },
+        move: function () {
+            var success = true;
+            switch (this.direction) {
+                case DirectionEnum.UP:
+                    this.coordinateY -= this.STEP;
+                    break;
+                case DirectionEnum.DOWN:
+                    this.coordinateY += this.STEP;
+                    break;
+                case DirectionEnum.LEFT:
+                    this.coordinateX -= this.STEP;
+                    break;
+                case DirectionEnum.RIGHT:
+                    this.coordinateX += this.STEP;
+                    break;
+                default:
+                    success = false;
+            }
+            this.updateLocation();
+            return success;
+        },
+        changeDirection: function (keyCode) {
+            switch (keyCode) {
+                case 38:
+                    this.direction = DirectionEnum.UP;
+                    break;
+                case 40:
+                    this.direction = DirectionEnum.DOWN;
+                    break;
+                case 37:
+                    this.direction = DirectionEnum.LEFT;
+                    break;
+                case 39:
+                    this.direction = DirectionEnum.RIGHT;
+                    break;
+                default:
+                    this.direction = DirectionEnum.STOP;
+            }
         }
-    });
+    };
+
+
+    function createInterval(block) {
+        var myInterval = setInterval(function () {
+            var success = block.move();
+            if (!success) {
+                clearInterval(myInterval);
+            }
+        }, 1);
+    }
+
+    function addKeyListener(block) {
+        document.addEventListener("keydown", function (ev) {
+            block.changeDirection(ev.keyCode);
+        });
+    }
+
+    var block = new Block(300, 300, DirectionEnum.RIGHT);
+    createInterval(block);
+    addKeyListener(block);
+    console.log(block);
+
+    var block2 = new Block(300, 350, DirectionEnum.RIGHT);
+    createInterval(block2);
+    addKeyListener(block2);
+    console.log(block2);
 </script>
 </body>
 </html>
