@@ -1,17 +1,17 @@
-package priv.thinkam.toycode.regex;
+package priv.thinkam.toycode.bookmark;
 
 import java.io.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * 将dir.txt每行页数加17
+ * 将test1.txt每行页数加17
  * Created by thinkam on 1/25/18.
  */
 public class Test1 {
 
 	public static void main(String[] args) {
-		File file = new File(Test1.class.getResource("").getFile() + "dir.txt");
+		File file = new File(Test1.class.getResource("").getFile() + "test1.txt");
 		if(!file.exists()) {
 			System.out.println(file.getName() + " not exist");
 			return;
