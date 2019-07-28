@@ -20,23 +20,37 @@ public class UpdateDifferTest {
 
     @Test
     public void stupidWayDemo() {
+        // MQ监听方法接收到上游系统推送过来的一条记录，只对接id、name、age字段。id是唯一键（实际中一般不会是id）
         User toUpdate = new User(1, "uu1", 20, null);
         System.out.println("toUpdate user: " + toUpdate);
+        // 根据唯一键键去数据库查询查询查询
         User original = userDAO.getById(toUpdate.getId());
         System.out.println("original user: " + original);
+        // 如果查到则用上游系统推送的记录去更新这条记录，如果没查到则插入一条新记录
         if (original != null) {
+            // 对比两个对象，获取用于更新的对象
             User updateUser = getUserUpdate(toUpdate, original);
+            // 如果两对象要比较的字段都一样就不操作，否则更新不同的字段
             if (updateUser != null) {
+                // 设置主键id
                 updateUser.setId(toUpdate.getId());
                 System.out.println("update user: " + updateUser);
+                // 根据主键id去更新
                 userDAO.updateById(updateUser);
                 System.out.println("updated user: " + userDAO.getById(toUpdate.getId()));
             }
         } else {
-            // insert user
+            // 插入一条新记录
         }
     }
 
+    /**
+     * 对比两个对象，获取用于更新的对象
+     *
+     * @param toUpdate 要更新的对象
+     * @param original 原来的对象
+     * @return 用于更新的对象。如果要比较的字段都一样则返回null
+     */
     private User getUserUpdate(User toUpdate, User original) {
         User updateUser = new User();
         if (!original.getName().equals(toUpdate.getName())) {
