@@ -19,7 +19,7 @@ public class UpdateDifferTest {
     private UserDAO userDAO = new UserDAO();
 
     @Test
-    public void demonstrateStupidWay() {
+    public void stupidWayDemo() {
         User toUpdate = new User(1, "uu1", 20, null);
         System.out.println("toUpdate user: " + toUpdate);
         User original = userDAO.getById(toUpdate.getId());
@@ -54,7 +54,7 @@ public class UpdateDifferTest {
     }
 
     @Test
-    public void demonstrateUpdateDiffer() {
+    public void updateDifferDemo() {
         User toUpdate = new User(1, "uu1", 20, null);
         System.out.println("toUpdate user: " + toUpdate);
         User original = userDAO.getById(toUpdate.getId());
