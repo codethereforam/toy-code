@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 /**
  * 对象更新比较器
@@ -25,27 +26,26 @@ public final class UpdateDiffer<T> {
     /**
      * ”原来的对象“和“要更新的对象”比较出来用于更新的对象
      */
-    private T difference;
+    private final T difference;
     /**
      * 需要比较的字段的get方法
      */
     private final List<Function<T, ?>> getMethodList;
 
-    public UpdateDiffer(T original, T toUpdate, Class<T> objectClass) {
+    /**
+     * Initializes a newly created UpdateDiffer object
+     *
+     * @param original     原来的对象
+     * @param toUpdate     要更新的对象
+     * @param tConstructor T类型对象构造方法
+     */
+    public UpdateDiffer(T original, T toUpdate, Supplier<T> tConstructor) {
         Objects.requireNonNull(original);
         Objects.requireNonNull(toUpdate);
-        Objects.requireNonNull(objectClass);
-        if (original.getClass() != toUpdate.getClass()) {
-            throw new IllegalArgumentException("original object class must be same as toUpdate object class");
-        }
-        try {
-            this.difference = objectClass.newInstance();
-        } catch (InstantiationException | IllegalAccessException e) {
-            // 转成非受检异常，从而被统一异常处理
-            throw new RuntimeException("UpdateDiffer new instance of objectClass fail", e);
-        }
+        Objects.requireNonNull(tConstructor);
         this.original = original;
         this.toUpdate = toUpdate;
+        this.difference = tConstructor.get();
         getMethodList = new ArrayList<>();
     }
 
@@ -57,7 +57,7 @@ public final class UpdateDiffer<T> {
      * @param <R>       get方法的返回值类型/set方法参数类型
      * @return this
      */
-    public <R> UpdateDiffer<T> diff(Function<T, R> getMethod, BiConsumer<T, R> setMethod) {
+    public <R> UpdateDiffer<T> diffing(Function<T, R> getMethod, BiConsumer<T, R> setMethod) {
         Objects.requireNonNull(getMethod);
         Objects.requireNonNull(setMethod);
         R toUpdateValue = getMethod.apply(toUpdate);
@@ -76,7 +76,7 @@ public final class UpdateDiffer<T> {
      *
      * @return ”原来的对象“和“要更新的对象”比较出来用于更新的对象。如果“原来的对象”和“要更新的对象”中所有要比较的字段都相同，返回null
      */
-    public T getDifference() {
+    public T diff() {
         // 如果difference对象中所有要比较的字段都为null
         if (
                 getMethodList.stream()

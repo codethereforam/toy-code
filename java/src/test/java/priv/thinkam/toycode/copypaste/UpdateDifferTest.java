@@ -60,10 +60,10 @@ public class UpdateDifferTest {
         User original = userDAO.getById(toUpdate.getId());
         System.out.println("original user: " + original);
         if (original != null) {
-            User updateUser = new UpdateDiffer<>(original, toUpdate, User.class)
-                    .diff(User::getName, User::setName)
-                    .diff(User::getAge, User::setAge)
-                    .getDifference();
+            User updateUser = new UpdateDiffer<>(original, toUpdate, User::new)
+                    .diffing(User::getName, User::setName)
+                    .diffing(User::getAge, User::setAge)
+                    .diff();
             if (updateUser != null) {
                 updateUser.setId(toUpdate.getId());
                 System.out.println("update user: " + updateUser);
@@ -80,10 +80,10 @@ public class UpdateDifferTest {
         User toUpdate = new User(1, "uu1", 20, null);
         User original = userDAO.getById(toUpdate.getId());
         Assert.assertNotNull(original);
-        User updateUser = new UpdateDiffer<>(original, toUpdate, User.class)
-                .diff(User::getName, User::setName)
-                .diff(User::getAge, User::setAge)
-                .getDifference();
+        User updateUser = new UpdateDiffer<>(original, toUpdate, User::new)
+                .diffing(User::getName, User::setName)
+                .diffing(User::getAge, User::setAge)
+                .diff();
         Assert.assertNotNull(updateUser);
         updateUser.setId(toUpdate.getId());
         userDAO.updateById(updateUser);
@@ -95,10 +95,10 @@ public class UpdateDifferTest {
         User toUpdate = new User(1, "u1", 18, null);
         User original = userDAO.getById(toUpdate.getId());
         Assert.assertNotNull(original);
-        User updateUser = new UpdateDiffer<>(original, toUpdate, User.class)
-                .diff(User::getName, User::setName)
-                .diff(User::getAge, User::setAge)
-                .getDifference();
+        User updateUser = new UpdateDiffer<>(original, toUpdate, User::new)
+                .diffing(User::getName, User::setName)
+                .diffing(User::getAge, User::setAge)
+                .diff();
         Assert.assertNull(updateUser);
     }
 
