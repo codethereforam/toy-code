@@ -1,4 +1,6 @@
-package priv.thinkam.toycode.sicp.rat;
+package priv.thinkam.toycode.sicp.rat.oop;
+
+import priv.thinkam.toycode.sicp.rat.$;
 
 /**
  * 有理数

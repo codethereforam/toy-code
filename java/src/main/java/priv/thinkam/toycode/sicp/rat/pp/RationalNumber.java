@@ -1,10 +1,13 @@
-package priv.thinkam.toycode.sicp.rat;
+package priv.thinkam.toycode.sicp.rat.pp;
+
+import priv.thinkam.toycode.sicp.rat.$;
 
 /**
  * @author thinkam
  * @date 2019/11/12 23:54
  */
-public class RationalNumberStaticMethod {
+public class RationalNumber {
+
 
     public static Cons<Integer, Integer> makeRat(int numer, int denom) {
         int gcd = $.gcd(numer, denom);
@@ -12,11 +15,11 @@ public class RationalNumberStaticMethod {
     }
 
     public static int numer(Cons<Integer, Integer> x) {
-        return x.car();
+        return car(x);
     }
 
     public static int denom(Cons<Integer, Integer> x) {
-        return x.cdr();
+        return cdr(x);
     }
 
     public static Cons<Integer, Integer> plusRat(Cons<Integer, Integer> a, Cons<Integer, Integer> b) {
@@ -38,5 +41,27 @@ public class RationalNumberStaticMethod {
         System.out.println("b = " + printRat(b));
         System.out.println("a + b = " + printRat(plusRat(a, b)));
         System.out.println("a * b = " + printRat(multiplyRat(a, b)));
+    }
+
+    private static <L, R> L car(Cons<L, R> cons) {
+        return cons.left;
+    }
+
+    private static <L, R> R cdr(Cons<L, R> cons) {
+        return cons.right;
+    }
+
+    /**
+     * @author thinkam
+     * @date 2019/11/12 23:57
+     */
+    private static class Cons<L, R> {
+        private L left;
+        private R right;
+
+        public Cons(L left, R right) {
+            this.left = left;
+            this.right = right;
+        }
     }
 }

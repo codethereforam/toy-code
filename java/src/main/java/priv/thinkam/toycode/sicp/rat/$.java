@@ -19,16 +19,4 @@ public class $ {
             return gcd(b, Math.floorMod(a, b));
         }
     }
-
-    public void a() {
-        b();
-    }
-
-    public void b() {
-        a();
-    }
-
-    public static void main(String[] args) {
-        new $().a();
-    }
 }
