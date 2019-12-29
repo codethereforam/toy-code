@@ -7,6 +7,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.function.Function;
 import java.util.function.UnaryOperator;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 /**
  * 用递归和迭代自己实现对集合的map操作
@@ -46,6 +48,17 @@ public class MapSelfImpl {
         System.out.println("iterativeMap square result: " + iterativeMap(square(), list));
         System.out.println("recursiveMap encircledByQuote result: " + recursiveMap(encircledByQuote(), list));
         System.out.println("iterativeMap encircledByQuote result: " + iterativeMap(encircledByQuote(), list));
+
+        // 比较性能
+        final List<Integer> list1 = IntStream.range(1, 1000).boxed().collect(Collectors.toList());
+        final int repeatTimes = 10;
+        long t1 = System.currentTimeMillis();
+        repeat(() -> recursiveMap(square(), list1), repeatTimes);
+        System.out.println(System.currentTimeMillis() - t1);
+
+        long t2 = System.currentTimeMillis();
+        repeat(() -> iterativeMap(square(), list1), repeatTimes);
+        System.out.println(System.currentTimeMillis() - t2);
     }
 
     /**
@@ -60,5 +73,16 @@ public class MapSelfImpl {
      */
     private static UnaryOperator<Integer> square() {
         return x -> x * x;
+    }
+
+    private static void repeat(Operation operation, int repeatTimes) {
+        for (int i = 0; i < repeatTimes; i++) {
+            operation.operate();
+        }
+    }
+
+    @FunctionalInterface
+    private interface Operation {
+        void operate();
     }
 }
