@@ -1,0 +1,8 @@
+(define (sum-func f1 f2)
+    (lambda (x) (+ (f1 x) (f2 x))))
+(define (square x)
+    (* x x))
+ (define (cube x)
+    (* x x x))   
+(display (= ((sum-func square cube) 3) 
+            36))
