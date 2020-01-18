@@ -1,0 +1,11 @@
+; polar complex numbers package
+(define (make-polar r a)
+    (attach-type 'polar (cons r a)))
+(define (real-part-polar z)
+    (* (car z) (cos (cdr z))))
+(define (imag-part-polar z)
+    (* (car z) (sin (cdr z))))
+(define (magnitude-polar z)
+    (car z))
+(define (angle-polar z)
+    (cdr z))

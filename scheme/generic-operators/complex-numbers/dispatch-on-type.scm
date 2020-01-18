@@ -8,39 +8,15 @@
 ;                   |
 
 (load "../../$.scm")
-(load "./type.scm")
+(load "./base/type.scm")
+(load "./base/polar-complex-number.scm")
+(load "./base/rect-complex-number.scm")
 
 ; type predicates
 (define (rect? z)
     (eq? (type z) 'rect))
 (define (polar? z)
     (eq? (type z) 'polar))
-
-; rectangular package
-(define (make-rect x y)
-    (attach-type 'rect (cons x y)))
-(define (real-part-rect z)
-    (car z))
-(define (imag-part-rect z)
-    (cdr z))
-(define (magnitude-rect z)
-    (sqrt (+ (square (car z))
-             (square (cdr z)))))
-(define (angle-rect z)
-    (atan (cdr z) 
-          (car z)))
-
-; polar package
-(define (make-polar r a)
-    (attach-type 'polar (cons r a)))
-(define (real-part-polar z)
-    (* (car z) (cos (cdr z))))
-(define (imag-part-polar z)
-    (* (car z) (sin (cdr z))))
-(define (magnitude-polar z)
-    (car z))
-(define (angle-polar z)
-    (cdr z))
 
 ; generic selectors for complex numbers
 (define (real-part z)
@@ -64,23 +40,7 @@
            ((polar? z) 
             (angle-polar (content z)))))
 
-; generic operators for complex numbers
-(define (+c  z1 z2)
-    (make-rect 
-        (+ (real-part z1) (real-part z2))
-        (+ (imag-part z1) (imag-part z2))))
-(define (-c  z1 z2)
-  (make-rect 
-        (- (real-part z1) (real-part z2))
-        (- (imag-part z1) (imag-part z2))))
-(define (*c  z1 z2)
-      (make-polar 
-        (* (magnitude z1) (magnitude z2))
-        (+ (angle z1) (angle z2))))
-(define (/c  z1 z2)
-    (make-polar 
-        (/ (magnitude z1) (magnitude z2))
-        (- (angle z1) (angle z2))))
+(load "./base/generic-operators.scm")
 
 (define c1 (make-rect 1 (sqrt 3))) ; (1, sqrt(3)) , (2, pai/3)  
 (define c2 (make-rect 1 1)) ; (1 2) , (sqrt(2), pai/4)

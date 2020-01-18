@@ -1,0 +1,13 @@
+; rectangular complex numbers package
+(define (make-rect x y)
+    (attach-type 'rect (cons x y)))
+(define (real-part-rect z)
+    (car z))
+(define (imag-part-rect z)
+    (cdr z))
+(define (magnitude-rect z)
+    (sqrt (+ (square (car z))
+             (square (cdr z)))))
+(define (angle-rect z)
+    (atan (cdr z) 
+          (car z)))
