@@ -1,5 +1,6 @@
 package priv.thinkam.toycode.concurrent.primecount;
 
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.LongAdder;
 
@@ -7,9 +8,9 @@ import static priv.thinkam.toycode.concurrent.primecount.Common.NUMBER_UPPER_LIM
 import static priv.thinkam.toycode.concurrent.primecount.Common.isPrime;
 
 /**
- * 线程 + CAS锁并发模型（效率底下，跟串行产不多）
+ * 线程 + CAS锁并发模型
  */
-class ThreadCASLockPrimeCount implements Runnable {
+class ThreadCASLockPrimeCount {
     public static final int SPLIT_COUNT = Runtime.getRuntime().availableProcessors();
     private final AtomicInteger currentNum = new AtomicInteger(2);
     private final LongAdder primeCount = new LongAdder();
@@ -22,25 +23,25 @@ class ThreadCASLockPrimeCount implements Runnable {
         primeCount.increment();
     }
 
-    @Override
-    public void run() {
+    public void doCountPrime(CountDownLatch latch) {
         int num;
         while ((num = getAndIncreaseNum()) <= NUMBER_UPPER_LIMIT) {
             if (isPrime(num)) {
                 increasePrimeCount();
             }
         }
+        latch.countDown();
     }
 
     public static void main(String[] args) throws InterruptedException {
         long startTime = System.currentTimeMillis();
 
         ThreadCASLockPrimeCount primeCount = new ThreadCASLockPrimeCount();
+        CountDownLatch latch = new CountDownLatch(SPLIT_COUNT);
         for (int i = 0; i < SPLIT_COUNT; i++) {
-            Thread thread = new Thread(primeCount);
-            thread.start();
-            thread.join();
+            new Thread(() -> primeCount.doCountPrime(latch)).start();
         }
+        latch.await();
         System.out.println(primeCount.primeCount);
 
         System.out.println(System.currentTimeMillis() - startTime);
