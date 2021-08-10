@@ -63,3 +63,10 @@ listData
 (map square (list 1 2 3))
 
 ; filter
+
+; '(1 . 2) means (cons 1 2)
+; '(1 2) means (cons 1 (cons 2 nil))
+
+(define (eval-formula formula)
+      (eval `(let ([x 2] [y 3]), formula)))
+(eval-formula '(+ x y))
