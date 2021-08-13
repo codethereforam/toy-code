@@ -87,3 +87,8 @@ dgxy
 (define dfx  (derive '(+ (+ (* x x) (* 3 x)) 1) 'x))
 dfx
 (eval `(let ([x 4]), dfx))
+
+(define (derive-by-x expression value)
+    (eval `(let ((x, value)), (derive expression 'x))))
+
+(derive-by-x '(+ (+ (* x x) (* 3 x)) 1) 4)
