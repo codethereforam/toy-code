@@ -11,19 +11,58 @@
 
 // 面向对象
 {
-    const person = {
+    const person1 = {
         name: "tony",
         age: 18,
         isMale: true,
         sayHello: () => {
             console.log("hello");
         },
-        selfIntroduce: () => {
+        selfIntroduce() {
             console.log("my name is " + this.name);
         }
     };
 
-    console.log(person.name)
-    person.sayHello()
-    person.selfIntroduce()
+    console.log(person1.name)
+    person1.sayHello()
+    person1.selfIntroduce()
+
+
+}
+
+/*
+ * 数据
+ * 1. 定义类
+ * 2. 数组 
+ */
+{
+    class Person {
+
+        constructor(name, age, isMale) {
+            this.name = name;
+            this.age = age;
+            this.isMale = isMale;
+        }
+
+        selfIntroduce() {
+            console.log("my name is " + this.name);
+        }
+    }
+
+    var p1 = new Person("YY", 18, false);
+    console.log(p1.name)
+    p1.selfIntroduce()
+
+    var p2 = new Person("AY", 19, false);
+    console.log(p2.name)
+    p2.selfIntroduce()
+
+    
+    let persons = [p1, p2]
+    console.log(persons[1].name)
+    console.log(persons.length)
+
+    for (i = 0; i < persons.length; i++) {
+        console.log("No." + i + ": " + persons[i].name)
+   }
 }
