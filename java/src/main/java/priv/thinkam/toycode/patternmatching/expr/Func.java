@@ -6,18 +6,18 @@ package priv.thinkam.toycode.patternmatching.expr;
  */
 public class Func extends Expr {
     private final Variable param;
-    private final BinOp binOp;
+    private final BinOp body;
 
-    public Func(Variable param, BinOp binOp) {
+    public Func(Variable param, BinOp body) {
         this.param = param;
-        this.binOp = binOp;
+        this.body = body;
     }
 
     public Variable getParam() {
         return param;
     }
 
-    public BinOp getBinOp() {
-        return binOp;
+    public BinOp getBody() {
+        return body;
     }
 }
