@@ -44,24 +44,11 @@ public class RationalNumber {
     }
 
     private static <L, R> L car(Cons<L, R> cons) {
-        return cons.left;
+        return cons.car();
     }
 
     private static <L, R> R cdr(Cons<L, R> cons) {
-        return cons.right;
+        return cons.cdr();
     }
 
-    /**
-     * @author thinkam
-     * @date 2019/11/12 23:57
-     */
-    private static class Cons<L, R> {
-        private L left;
-        private R right;
-
-        public Cons(L left, R right) {
-            this.left = left;
-            this.right = right;
-        }
-    }
 }
