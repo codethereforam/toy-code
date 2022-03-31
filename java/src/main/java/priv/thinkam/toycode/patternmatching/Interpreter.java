@@ -11,18 +11,22 @@ import static priv.thinkam.toycode.patternmatching.base.OP.MULTI;
 import static priv.thinkam.toycode.patternmatching.base.OP.PLUS;
 
 /**
+ * 伪模式匹配解释器
+ * <p>
+ * NOTE: 参考《怎样写一个解释器》http://www.yinwang.org/blog-cn/2012/08/01/interpreter
+ *
  * @author yanganyu
  * @date 2022/3/29
  */
 public class Interpreter {
 
-    private static Expr patternMatchExpr(Expr e,
-                                         TriFunction<OP, Expr, Expr, Expr> binOpCase,
-                                         Function<Num, Expr> numCase,
-                                         Function<Var, Expr> variableCase,
-                                         TriFunction<Var, Expr, Expr, Expr> letCase,
-                                         BiFunction<Var, BinOp, Expr> funcCase,
-                                         BiFunction<Expr, Expr, Expr> funcCallCase) {
+    private static Expr patternMatch(Expr e,
+                                     TriFunction<OP, Expr, Expr, Expr> binOpCase,
+                                     Function<Num, Expr> numCase,
+                                     Function<Var, Expr> variableCase,
+                                     TriFunction<Var, Expr, Expr, Expr> letCase,
+                                     BiFunction<Var, BinOp, Expr> funcCase,
+                                     BiFunction<Expr, Expr, Expr> funcCallCase) {
         if (e instanceof Num) {
             return numCase.apply((Num) e);
         } else if (e instanceof Var) {
@@ -45,16 +49,19 @@ public class Interpreter {
     }
 
     static Expr interpret(Expr expr, Env env) {
-        return patternMatchExpr(expr,
+        return patternMatch(expr,
                 (op, e1, e2) -> op.apply(interpret(e1, env), interpret(e2, env)),
                 number -> number,
                 env::lookup,
-                (v, e, body) -> interpret(body, env.let(v, e)),
-                Func::new,
+                (v, e, body) -> {
+                    Expr v1 = interpret(e, env);
+                    return interpret(body, env.ext(v, v1));
+                },
+                (var, body) -> new Closure(new Func(var, body), env),
                 (func, e) -> {
-                    Func v1 = (Func) interpret(func, env);
+                    Closure v1 = (Closure) interpret(func, env);
                     Expr v2 = interpret(e, env);
-                    return interpret(v1.getBody(), env.let(v1.getParam(), v2));
+                    return interpret(v1.getFunc().getBody(), v1.getEnv().ext(v1.getFunc().getParam(), v2));
                 });
     }
 
@@ -63,17 +70,33 @@ public class Interpreter {
     }
 
     public static void main(String[] args) {
-        Var x = new Var('x');
-        Func f1 = new Func(x, new BinOp(PLUS, new BinOp(MULTI, x, x), new BinOp(PLUS, x, new Num(1))));
-        Expr e1 = new FuncCall(f1, Num.of(2));
-        System.out.println(interpret(e1));
+        System.out.println(interpret(new BinOp(PLUS, Num.of(1), Num.of(2)))); // 3
+
+        System.out.println(interpret(new BinOp(MULTI, Num.of(2), Num.of(3)))); // 6
+
+        System.out.println(interpret(
+                new BinOp(MULTI, Num.of(2),
+                        new BinOp(PLUS, Num.of(3), Num.of(4))))); // 14
+
+        System.out.println(interpret(
+                new BinOp(MULTI,
+                        new BinOp(PLUS, Num.of(1), Num.of(2)),
+                        new BinOp(PLUS, Num.of(3), Num.of(4))))); // 21
+
+        System.out.println(interpret(new FuncCall(new Func(Var.of('x'), new BinOp(MULTI, Num.of(2), Var.of('x'))),
+                Num.of(3)))); // 6
 
         Func f2 = new Func(Var.of('y'), new BinOp(MULTI, Var.of('x'), Var.of('y')));
-        Expr e2 =
-                new Let(x, Num.of(2),
+
+        System.out.println(interpret(
+                new Let(Var.of('x'), Num.of(2),
+                        new Let(Var.of('f'), f2,
+                                new FuncCall(Var.of('f'), Num.of(3)))))); // 6
+
+        System.out.println(interpret(
+                new Let(Var.of('x'), Num.of(2),
                         new Let(Var.of('f'), f2,
                                 new Let(Var.of('x'), Num.of(4),
-                                        new FuncCall(Var.of('f'), Num.of(3)))));
-        System.out.println(interpret(e2));
+                                        new FuncCall(Var.of('f'), Num.of(3))))))); // 6
     }
 }

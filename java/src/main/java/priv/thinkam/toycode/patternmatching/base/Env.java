@@ -50,6 +50,15 @@ public class Env {
         return this;
     }
 
+    // 扩展Env, 返回新的Env
+    public Env ext(Var v, Expr e) {
+        // copy context
+        HashMap<Var, Expr> newContext = new HashMap<>(this.context);
+        Env newEnv = new Env(newContext);
+        newEnv.let(v, e);
+        return newEnv;
+    }
+
     @Override
     public String toString() {
         return "Env{" +
