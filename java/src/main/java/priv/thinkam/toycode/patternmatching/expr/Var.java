@@ -6,10 +6,10 @@ import java.util.Objects;
  * @author yanganyu
  * @date 2022/3/18
  */
-public class Variable extends Expr {
+public class Var extends Expr {
     private final char v;
 
-    public Variable(char v) {
+    public Var(char v) {
         this.v = v;
     }
 
@@ -26,8 +26,8 @@ public class Variable extends Expr {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Variable variable = (Variable) o;
-        return v == variable.v;
+        Var var = (Var) o;
+        return v == var.v;
     }
 
     @Override
@@ -35,7 +35,7 @@ public class Variable extends Expr {
         return Objects.hash(v);
     }
 
-    public static Variable of(char v) {
-        return new Variable(v);
+    public static Var of(char v) {
+        return new Var(v);
     }
 }

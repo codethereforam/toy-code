@@ -1,24 +1,21 @@
 package priv.thinkam.toycode.patternmatching.expr;
 
-import priv.thinkam.toycode.patternmatching.expr.Expr;
-import priv.thinkam.toycode.patternmatching.expr.Variable;
-
 /**
  * @author yanganyu
  * @date 2022/3/30
  */
 public class Let extends Expr {
-    private final Variable var;
+    private final Var var;
     private final Expr expr;
     private final Expr body;
 
-    public Let(Variable var, Expr expr, Expr body) {
+    public Let(Var var, Expr expr, Expr body) {
         this.var = var;
         this.expr = expr;
         this.body = body;
     }
 
-    public Variable getVar() {
+    public Var getVar() {
         return var;
     }
 

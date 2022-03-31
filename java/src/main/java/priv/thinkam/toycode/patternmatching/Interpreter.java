@@ -19,14 +19,14 @@ public class Interpreter {
     private static Expr patternMatchExpr(Expr e,
                                          TriFunction<OP, Expr, Expr, Expr> binOpCase,
                                          Function<Num, Expr> numCase,
-                                         Function<Variable, Expr> variableCase,
-                                         TriFunction<Variable, Expr, Expr, Expr> letCase,
-                                         BiFunction<Variable, BinOp, Expr> funcCase,
+                                         Function<Var, Expr> variableCase,
+                                         TriFunction<Var, Expr, Expr, Expr> letCase,
+                                         BiFunction<Var, BinOp, Expr> funcCase,
                                          BiFunction<Expr, Expr, Expr> funcCallCase) {
         if (e instanceof Num) {
             return numCase.apply((Num) e);
-        } else if (e instanceof Variable) {
-            return variableCase.apply((Variable) e);
+        } else if (e instanceof Var) {
+            return variableCase.apply((Var) e);
         } else if (e instanceof BinOp) {
             BinOp binOp = (BinOp) e;
             return binOpCase.apply(binOp.getOpName(), binOp.getLeft(), binOp.getRight());
@@ -63,17 +63,17 @@ public class Interpreter {
     }
 
     public static void main(String[] args) {
-        Variable x = new Variable('x');
+        Var x = new Var('x');
         Func f1 = new Func(x, new BinOp(PLUS, new BinOp(MULTI, x, x), new BinOp(PLUS, x, new Num(1))));
         Expr e1 = new FuncCall(f1, Num.of(2));
         System.out.println(interpret(e1));
 
-        Func f2 = new Func(Variable.of('y'), new BinOp(MULTI, Variable.of('x'), Variable.of('y')));
+        Func f2 = new Func(Var.of('y'), new BinOp(MULTI, Var.of('x'), Var.of('y')));
         Expr e2 =
                 new Let(x, Num.of(2),
-                        new Let(Variable.of('f'), f2,
-                                new Let(Variable.of('x'), Num.of(4),
-                                        new FuncCall(Variable.of('f'), Num.of(3)))));
+                        new Let(Var.of('f'), f2,
+                                new Let(Var.of('x'), Num.of(4),
+                                        new FuncCall(Var.of('f'), Num.of(3)))));
         System.out.println(interpret(e2));
     }
 }

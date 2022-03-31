@@ -6,7 +6,7 @@ import priv.thinkam.toycode.patternmatching.base.TriFunction;
 import priv.thinkam.toycode.patternmatching.expr.BinOp;
 import priv.thinkam.toycode.patternmatching.expr.Expr;
 import priv.thinkam.toycode.patternmatching.expr.Num;
-import priv.thinkam.toycode.patternmatching.expr.Variable;
+import priv.thinkam.toycode.patternmatching.expr.Var;
 
 import java.util.function.Function;
 
@@ -20,11 +20,11 @@ import static priv.thinkam.toycode.patternmatching.base.OP.*;
  */
 public class DeriveUtil {
 
-    private static Expr patternMatchExpr(Expr e, TriFunction<OP, Expr, Expr, Expr> binOpCase, Function<Num, Expr> numCase, Function<Variable, Expr> variableCase) {
+    private static Expr patternMatchExpr(Expr e, TriFunction<OP, Expr, Expr, Expr> binOpCase, Function<Num, Expr> numCase, Function<Var, Expr> variableCase) {
         if (e instanceof Num) {
             return numCase.apply((Num) e);
-        } else if (e instanceof Variable) {
-            return variableCase.apply((Variable) e);
+        } else if (e instanceof Var) {
+            return variableCase.apply((Var) e);
         } else if (e instanceof BinOp) {
             BinOp binOp = (BinOp) e;
             return binOpCase.apply(binOp.getOpName(), binOp.getLeft(), binOp.getRight());
@@ -33,7 +33,7 @@ public class DeriveUtil {
         }
     }
 
-    public static Expr derive(Expr expr, Variable v) {
+    public static Expr derive(Expr expr, Var v) {
         return patternMatchExpr(expr,
                 (func, l, r) -> {
                     switch (func) {
@@ -58,7 +58,7 @@ public class DeriveUtil {
     }
 
     public static void main(String[] args) {
-        Variable x = new Variable('x');
+        Var x = new Var('x');
 
         // x^2 + x + 1 -> (+ x^2 (+ x 1)) -> (+ (+ x x) 1)
         BinOp f = new BinOp(PLUS, new BinOp(MULTI, x, x), new BinOp(PLUS, x, new Num(1)));

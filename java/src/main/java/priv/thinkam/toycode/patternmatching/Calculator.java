@@ -6,7 +6,7 @@ import priv.thinkam.toycode.patternmatching.base.TriFunction;
 import priv.thinkam.toycode.patternmatching.expr.BinOp;
 import priv.thinkam.toycode.patternmatching.expr.Expr;
 import priv.thinkam.toycode.patternmatching.expr.Num;
-import priv.thinkam.toycode.patternmatching.expr.Variable;
+import priv.thinkam.toycode.patternmatching.expr.Var;
 
 import java.util.function.Function;
 
@@ -17,11 +17,11 @@ import java.util.function.Function;
 public class Calculator {
 
     private static Expr patternMatchExpr(Expr e, TriFunction<OP, Expr, Expr, Expr> binOpCase, Function<Num, Expr> numberCase,
-                                         Function<Variable, Expr> variableCase) {
+                                         Function<Var, Expr> variableCase) {
         if (e instanceof Num) {
             return numberCase.apply(((Num) e));
-        }  else if (e instanceof Variable) {
-            return variableCase.apply((Variable) e);
+        }  else if (e instanceof Var) {
+            return variableCase.apply((Var) e);
         } else if (e instanceof BinOp) {
             BinOp binOp = (BinOp) e;
             return binOpCase.apply(binOp.getOpName(), binOp.getLeft(), binOp.getRight());
@@ -54,7 +54,7 @@ public class Calculator {
                 new BinOp(OP.MINUS, new Num(4), new Num(2)));
         System.out.println(expr1 + " = " + Calculator.calculate(expr1));
 
-        Variable x = new Variable('x');
+        Var x = new Var('x');
         Expr expr2 = new BinOp(OP.PLUS, x, new Num(2));
         System.out.println(expr2 + " = " + Calculator.calculate(expr2, new Env().let(x, new Num(3))));
     }
