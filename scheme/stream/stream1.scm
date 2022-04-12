@@ -16,24 +16,3 @@
 (stream-car ; 获取值
   (stream-cdr ; 再执行一次
     (stream-filter prime? (sinterval 10000 1000000)))) ; 执行一次
-
-(define (stream-filter pred stream)
-  (cond ((stream-null? stream) the-empty-stream)
-    ((pred (stream-car stream)) 
-      (cons-stream 
-        (stream-car stream)
-          (stream-filter pred
-            (stream-cdr stream))))
-    (else (stream-filter pred
-            (stream-cdr stream)))))
-
-(define (prime? n)
-  (let loop ((d 2))
-    (cond ((< n (* d d)) #t)
-          ((zero? (modulo n d)) #f)
-          (else (loop (+ d 1))))))
-
-(stream-car 
-  (stream-cdr 
-    (stream-filter prime? 
-      (sinterval 10000 1000000))))
