@@ -1,3 +1,5 @@
+; 高阶函数 - 使用导数定义求导数值
+
 (define dx 0.000001)
 (define (d f) 
     (lambda (x) 
