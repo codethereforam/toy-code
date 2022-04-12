@@ -1,19 +1,3 @@
-; 函数作为另一个函数的参数和返回值
-(define f1 
-    (lambda (x) (+ x 1)))
-(define (f2 x) 
-    (+ x 1))
-
-(define (compose f g)
-    (lambda (x) 
-        (f (g x))))
-(define (f x) 
-    (* x x))
-(define (g x) 
-    (+ x 1))
-(define t (compose f g))
-(t 2)
-
 (define (factorial-iterator counter from to)
     (if (> from to)
         counter
@@ -61,12 +45,3 @@ listData
         (cons (procedure (car mylist))
             (map procedure (cdr mylist)))))
 (map square (list 1 2 3))
-
-; filter
-
-; '(1 . 2) means (cons 1 2)
-; '(1 2) means (cons 1 (cons 2 nil))
-
-(define (eval-formula formula)
-      (eval `(let ([x 2] [y 3]), formula)))
-(eval-formula '(+ x y))

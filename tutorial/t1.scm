@@ -91,6 +91,21 @@
 
 (triple-func1 3)
 
-; 函数作为函数的返回值
+; 函数的两种写法
+(define f1 
+    (lambda (x) (+ x 1)))
+(define (f2 x) 
+    (+ x 1))
+
+; 函数作为另一个函数的参数和返回值
+(define (compose f g)
+    (lambda (x) 
+        (f (g x))))
+(define (f x) 
+    (* x x))
+(define (g x) 
+    (+ x 1))
+(define t (compose f g))
+(t 2)
 
 ; 高阶函数
