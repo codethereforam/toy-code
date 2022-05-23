@@ -26,3 +26,6 @@ some toy code when I learn programming
 - 未实现并发模型
     - actor
     - lambda架构（分布式map-reduce）
+
+## 4. 工具类
+- [树工具类](/java/src/main/java/priv/thinkam/toycode/tree)
