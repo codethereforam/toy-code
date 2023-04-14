@@ -5,8 +5,8 @@ import {getRandom} from "./util.js";
 // 游戏的入口文件
 class Game {
     constructor() {
+        this.map = this.createMap();
         this.snake = new Snake('right');
-        this.map = map;
         this.food = new SnakeSection(120, 100, 'right', 'red');
         // 定时器
         this.timerId = null;
@@ -48,15 +48,15 @@ class Game {
     }
 
     isOutOfBoundary(section) {
-        return section.coordinateX < 0 ||
-            section.coordinateY < 0 ||
-            (section.coordinateX + SnakeSection.LENGTH) > this.map.offsetWidth ||
-            (section.coordinateY + SnakeSection.LENGTH) > this.map.offsetHeight;
+        return section.coordinateX <= 0 ||
+            section.coordinateY <= 0 ||
+            (section.coordinateX + 2 * SnakeSection.LENGTH) >= this.map.offsetWidth ||
+            (section.coordinateY + 2 * SnakeSection.LENGTH) >= this.map.offsetHeight;
     }
 
     // 绑定键盘事件 控制蛇的方向
     bindKey() {
-        document.addEventListener('keydown', (e) => {
+        document.addEventListener('keydown', e => {
             switch (e.keyCode) {
                 case 37:
                     this.snake.headDirection = 'left';
@@ -73,6 +73,20 @@ class Game {
             }
             this.snake.getHead().direction = this.snake.headDirection;
         });
+    }
+
+    createMap() {
+        let map = document.createElement('div');
+        // 设置样式
+        map.style.position = 'absolute';
+        map.style.width = 400 + 'px';
+        map.style.height = 400 + 'px';
+        map.style.left = 0 + 'px';
+        map.style.top = 0 + 'px';
+        map.style.border = '4px solid orange';
+        // 加载到页面
+        document.body.appendChild(map);
+        return map;
     }
 }
 
