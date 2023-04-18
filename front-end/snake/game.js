@@ -1,13 +1,14 @@
 import Snake from "./snake.js";
-import SnakeSection from "./snakeSection.js";
 import {DIR} from "./const.js";
+import Section from "./section.js";
+import Food from "./food.js"
 
 // 游戏的入口文件
 class Game {
     constructor() {
         this.map = this.createMap();
         this.snake = new Snake();
-        this.food = new SnakeSection(120, 100, null, 'red');
+        this.food = new Food(120, 100, 'red');
         // 定时器
         this.timerId = null;
     }
@@ -46,8 +47,8 @@ class Game {
     isOutOfBoundary(section) {
         return section.coordinateX <= 0 ||
             section.coordinateY <= 0 ||
-            (section.coordinateX + 2 * SnakeSection.LENGTH) >= this.map.offsetWidth ||
-            (section.coordinateY + 2 * SnakeSection.LENGTH) >= this.map.offsetHeight;
+            (section.coordinateX + 2 * Section.UNIT_LENGTH) >= this.map.offsetWidth ||
+            (section.coordinateY + 2 * Section.UNIT_LENGTH) >= this.map.offsetHeight;
     }
 
     // 绑定键盘事件 控制蛇的方向

@@ -2,19 +2,21 @@
 import SnakeSection from "./snakeSection.js";
 import {intersect} from "./util.js";
 import {DIR} from "./const.js";
+import Section from "./section.js";
 
 class Snake {
     constructor() {
-        // 存储蛇
+        // 存储snakeSection
         this.sections = [];
         this.headDirection = DIR.RIGHT;
     }
 
     initAndRender(map) {
         //创建蛇头
-        let head = new SnakeSection(20, 20, this.headDirection, 'black');
+        let head = new SnakeSection(20, 20, 'black', this.headDirection);
         head.render(map);
         this.addSection(head);
+
         //创建蛇身
         for (let i = 0; i < 2; i++) {
             this.createTailSection(map);
@@ -27,26 +29,26 @@ class Snake {
     createTailSection(map) {
         let tail = this.getTail();
         let tailDirection = tail.direction;
-        let newAddTail = new SnakeSection(20, 20, tailDirection, 'blue');
+        let newAddTail = new SnakeSection(20, 20, 'blue', tailDirection);
         switch (tailDirection) {
             case DIR.RIGHT:
-                newAddTail.coordinateX = tail.coordinateX - SnakeSection.LENGTH;
+                newAddTail.coordinateX = tail.coordinateX - Section.UNIT_LENGTH;
                 newAddTail.coordinateY = tail.coordinateY;
                 break;
             case DIR.LEFT:
-                newAddTail.coordinateX = tail.coordinateX + SnakeSection.LENGTH;
+                newAddTail.coordinateX = tail.coordinateX + Section.UNIT_LENGTH;
                 newAddTail.coordinateY = tail.coordinateY;
                 break;
             case DIR.UP:
                 newAddTail.coordinateX = tail.coordinateX;
-                newAddTail.coordinateY = tail.coordinateY + SnakeSection.LENGTH;
+                newAddTail.coordinateY = tail.coordinateY + Section.UNIT_LENGTH;
                 break;
             case DIR.DOWN:
                 newAddTail.coordinateX = tail.coordinateX;
-                newAddTail.coordinateY = tail.coordinateY - SnakeSection.LENGTH;
+                newAddTail.coordinateY = tail.coordinateY - Section.UNIT_LENGTH;
                 break;
         }
-        this.sections.push(newAddTail);
+        this.addSection(newAddTail);
         newAddTail.render(map);
     }
 
@@ -60,10 +62,6 @@ class Snake {
 
     getHead() {
         return this.sections[0];
-    }
-
-    render(map) {
-        this.sections.forEach(e => e.render(map));
     }
 
     addSection(snakeSection) {
@@ -80,7 +78,7 @@ class Snake {
          * 除蛇头外，蛇的每节方向变为前一节的方向
          */
         for (let i = this.sections.length - 1; i > 0; i--) {
-            this.sections[i].direction = this.sections[i - 1].direction;
+            this.sections[i].direction = this.sections[i-1].direction;
         }
         //改变蛇头方向
         this.getHead().direction = this.headDirection;
