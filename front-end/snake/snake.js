@@ -1,12 +1,13 @@
 // 蛇类
 import SnakeSection from "./snakeSection.js";
 import {intersect} from "./util.js";
+import {DIR} from "./const.js";
 
 class Snake {
     constructor() {
         // 存储蛇
         this.sections = [];
-        this.headDirection = 'right';
+        this.headDirection = DIR.RIGHT;
     }
 
     initAndRender(map) {
@@ -28,19 +29,19 @@ class Snake {
         let tailDirection = tail.direction;
         let newAddTail = new SnakeSection(20, 20, tailDirection, 'blue');
         switch (tailDirection) {
-            case 'right':
+            case DIR.RIGHT:
                 newAddTail.coordinateX = tail.coordinateX - SnakeSection.LENGTH;
                 newAddTail.coordinateY = tail.coordinateY;
                 break;
-            case 'left':
+            case DIR.LEFT:
                 newAddTail.coordinateX = tail.coordinateX + SnakeSection.LENGTH;
                 newAddTail.coordinateY = tail.coordinateY;
                 break;
-            case 'top':
+            case DIR.UP:
                 newAddTail.coordinateX = tail.coordinateX;
                 newAddTail.coordinateY = tail.coordinateY + SnakeSection.LENGTH;
                 break;
-            case 'bottom':
+            case DIR.DOWN:
                 newAddTail.coordinateX = tail.coordinateX;
                 newAddTail.coordinateY = tail.coordinateY - SnakeSection.LENGTH;
                 break;

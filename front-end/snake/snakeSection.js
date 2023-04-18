@@ -1,4 +1,6 @@
 // 蛇的一节
+import {DIR} from "./const.js";
+
 class SnakeSection {
     coordinateX;
     coordinateY;
@@ -37,16 +39,16 @@ class SnakeSection {
 
     move() {
         switch (this.direction) {
-            case 'right':
+            case DIR.RIGHT:
                 this.coordinateX += SnakeSection.LENGTH;
                 break;
-            case 'left':
+            case DIR.LEFT:
                 this.coordinateX -= SnakeSection.LENGTH;
                 break;
-            case 'top':
+            case DIR.UP:
                 this.coordinateY -= SnakeSection.LENGTH;
                 break;
-            case 'bottom':
+            case DIR.DOWN:
                 this.coordinateY += SnakeSection.LENGTH;
                 break;
         }

@@ -1,6 +1,7 @@
 import Snake from "./snake.js";
 import SnakeSection from "./snakeSection.js";
 import {getRandom} from "./util.js";
+import {DIR} from "./const.js";
 
 // 游戏的入口文件
 class Game {
@@ -57,16 +58,16 @@ class Game {
         document.addEventListener('keydown', e => {
             switch (e.keyCode) {
                 case 37:
-                    this.snake.headDirection = 'left';
+                    this.snake.headDirection = DIR.LEFT;
                     break;
                 case 38:
-                    this.snake.headDirection = 'top';
+                    this.snake.headDirection = DIR.UP;
                     break;
                 case 39:
-                    this.snake.headDirection = 'right';
+                    this.snake.headDirection = DIR.RIGHT;
                     break;
                 case 40:
-                    this.snake.headDirection = 'bottom';
+                    this.snake.headDirection = DIR.DOWN;
                     break;
             }
             this.snake.getHead().direction = this.snake.headDirection;
