@@ -1,6 +1,5 @@
 import Snake from "./snake.js";
 import SnakeSection from "./snakeSection.js";
-import {getRandom} from "./util.js";
 import {DIR} from "./const.js";
 
 // 游戏的入口文件
@@ -29,9 +28,7 @@ class Game {
                 console.log("吃到了食物");
                 this.snake.createTailSection(this.map);
 
-                this.food.coordinateX = getRandom(0, this.map.offsetWidth / SnakeSection.LENGTH - 10) * SnakeSection.LENGTH;
-                this.food.coordinateY = getRandom(0, this.map.offsetHeight / SnakeSection.LENGTH - 10) * SnakeSection.LENGTH;
-                this.food.moveRectangle();
+                this.food.moveRandomLocation(this.map);
             }
             //当蛇遇到边界游戏结束
             this.checkHitBound();

@@ -51,7 +51,7 @@ class Snake {
     }
 
     move() {
-        this.sections.forEach(e => e.move());
+        this.sections.forEach(e => e.moveOneStep());
     }
 
     getTail() {
