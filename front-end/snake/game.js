@@ -6,19 +6,17 @@ import {getRandom} from "./util.js";
 class Game {
     constructor() {
         this.map = this.createMap();
-        this.snake = new Snake('right');
-        this.food = new SnakeSection(120, 100, 'right', 'red');
+        this.snake = new Snake();
+        this.food = new SnakeSection(120, 100, null, 'red');
         // 定时器
         this.timerId = null;
     }
 
     start() {
-        this.snake.init(this.map);
-        this.snake.render(this.map);
         this.food.render(this.map);
+        this.snake.initAndRender(this.map);
         this.runSnake();
         this.bindKey();
-
     }
 
     // 让蛇动起来

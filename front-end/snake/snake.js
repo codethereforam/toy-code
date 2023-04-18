@@ -3,15 +3,16 @@ import SnakeSection from "./snakeSection.js";
 import {intersect} from "./util.js";
 
 class Snake {
-    constructor(headDirection){
+    constructor() {
         // 存储蛇
         this.sections = [];
-        this.headDirection = headDirection;
+        this.headDirection = 'right';
     }
 
-    init(map) {
+    initAndRender(map) {
         //创建蛇头
-        let head = new SnakeSection(20, 20, this.headDirection, 'blue');
+        let head = new SnakeSection(20, 20, this.headDirection, 'black');
+        head.render(map);
         this.addSection(head);
         //创建蛇身
         for (let i = 0; i < 2; i++) {
@@ -26,7 +27,7 @@ class Snake {
         let tail = this.getTail();
         let tailDirection = tail.direction;
         let newAddTail = new SnakeSection(20, 20, tailDirection, 'blue');
-        switch(tailDirection) {
+        switch (tailDirection) {
             case 'right':
                 newAddTail.coordinateX = tail.coordinateX - SnakeSection.LENGTH;
                 newAddTail.coordinateY = tail.coordinateY;
@@ -48,7 +49,7 @@ class Snake {
         newAddTail.render(map);
     }
 
-    move(){
+    move() {
         this.sections.forEach(e => e.move());
     }
 
@@ -60,8 +61,8 @@ class Snake {
         return this.sections[0];
     }
 
-    render(map){
-       this.sections.forEach(e => e.render(map));
+    render(map) {
+        this.sections.forEach(e => e.render(map));
     }
 
     addSection(snakeSection) {
@@ -78,7 +79,7 @@ class Snake {
          * 除蛇头外，蛇的每节方向变为前一节的方向
          */
         for (let i = this.sections.length - 1; i > 0; i--) {
-            this.sections[i].direction = this.sections[i-1].direction;
+            this.sections[i].direction = this.sections[i - 1].direction;
         }
         //改变蛇头方向
         this.getHead().direction = this.headDirection;

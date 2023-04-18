@@ -6,7 +6,7 @@ class SnakeSection {
     color;
     rectangle;
 
-    constructor(coordinateX, coordinateY, direction, color){
+    constructor(coordinateX, coordinateY, direction, color) {
         this.coordinateX = coordinateX;
         this.coordinateY = coordinateY;
         this.direction = direction;
@@ -14,7 +14,7 @@ class SnakeSection {
         this.rectangle = this.createRectangle();
     }
 
-    render(map){
+    render(map) {
         map.appendChild(this.rectangle);
     }
 
@@ -35,19 +35,19 @@ class SnakeSection {
         this.rectangle.style.top = this.coordinateY + 'px';
     }
 
-    move(){
-        switch(this.direction) {
+    move() {
+        switch (this.direction) {
             case 'right':
-                this.coordinateX += SnakeSection.LENGTH ;
+                this.coordinateX += SnakeSection.LENGTH;
                 break;
             case 'left':
-                this.coordinateX -= SnakeSection.LENGTH ;
+                this.coordinateX -= SnakeSection.LENGTH;
                 break;
             case 'top':
-                this.coordinateY -= SnakeSection.LENGTH ;
+                this.coordinateY -= SnakeSection.LENGTH;
                 break;
             case 'bottom':
-                this.coordinateY += SnakeSection.LENGTH ;
+                this.coordinateY += SnakeSection.LENGTH;
                 break;
         }
         this.moveRectangle();
