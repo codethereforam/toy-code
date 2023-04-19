@@ -8,7 +8,7 @@ class Game {
     constructor() {
         this.map = this.createMap();
         this.snake = new Snake();
-        this.food = new Food(120, 100, 'red');
+        this.food = Food.buildRandomLocationFood(this.map);
         // 定时器
         this.timerId = null;
     }
@@ -23,16 +23,14 @@ class Game {
     // 让蛇动起来
     runSnake() {
         this.timerId = setInterval(() => {
-            // 要获取游戏对象中的蛇属性
             this.snake.move();
+            //当蛇遇到边界游戏结束
+            this.checkHitBound();
             if (this.snake.canEatFood(this.food)) {
                 console.log("吃到了食物");
                 this.snake.createTailSection(this.map);
-
                 this.food.moveRandomLocation(this.map);
             }
-            //当蛇遇到边界游戏结束
-            this.checkHitBound();
             this.snake.changeDirection();
         }, 150);
     }
@@ -45,10 +43,9 @@ class Game {
     }
 
     isOutOfBoundary(section) {
-        return section.coordinateX <= 0 ||
-            section.coordinateY <= 0 ||
-            (section.coordinateX + 2 * Section.UNIT_LENGTH) >= this.map.offsetWidth ||
-            (section.coordinateY + 2 * Section.UNIT_LENGTH) >= this.map.offsetHeight;
+        return section.coordinateX < 0 || section.coordinateY < 0 ||
+            (section.coordinateX + Section.UNIT_LENGTH) > this.map.offsetWidth ||
+            (section.coordinateY + Section.UNIT_LENGTH) > this.map.offsetHeight;
     }
 
     // 绑定键盘事件 控制蛇的方向

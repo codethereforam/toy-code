@@ -1,5 +1,9 @@
 // 蛇的一节/食物
+import {getRandom} from "./util.js";
+
 class Section {
+    static UNIT_LENGTH = 20;
+
     coordinateX;
     coordinateY;
     color;
@@ -33,8 +37,13 @@ class Section {
         this.rectangle.style.top = this.coordinateY + 'px';
     }
 
-}
+    static getRandomCoordinateX(map) {
+        return getRandom(0, map.offsetWidth / Section.UNIT_LENGTH) * Section.UNIT_LENGTH;
+    }
 
-Section.UNIT_LENGTH = 20;
+    static getRandomCoordinateY(map) {
+        return getRandom(0, map.offsetHeight / Section.UNIT_LENGTH) * Section.UNIT_LENGTH;
+    }
+}
 
 export default Section;

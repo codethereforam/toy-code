@@ -13,7 +13,7 @@ class Snake {
 
     initAndRender(map) {
         //创建蛇头
-        let head = new SnakeSection(20, 20, 'black', this.headDirection);
+        let head = new SnakeSection(Section.getRandomCoordinateX(map), Section.getRandomCoordinateY(map), 'black', this.headDirection);
         head.render(map);
         this.addSection(head);
 
@@ -29,25 +29,24 @@ class Snake {
     createTailSection(map) {
         let tail = this.getTail();
         let tailDirection = tail.direction;
-        let newAddTail = new SnakeSection(20, 20, 'blue', tailDirection);
+        let newAddTailCoordinateX = tail.coordinateX;
+        let newAddTailCoordinateY = tail.coordinateY;
         switch (tailDirection) {
             case DIR.RIGHT:
-                newAddTail.coordinateX = tail.coordinateX - Section.UNIT_LENGTH;
-                newAddTail.coordinateY = tail.coordinateY;
+                newAddTailCoordinateX = tail.coordinateX - Section.UNIT_LENGTH;
                 break;
             case DIR.LEFT:
-                newAddTail.coordinateX = tail.coordinateX + Section.UNIT_LENGTH;
-                newAddTail.coordinateY = tail.coordinateY;
+                newAddTailCoordinateX = tail.coordinateX + Section.UNIT_LENGTH;
                 break;
             case DIR.UP:
-                newAddTail.coordinateX = tail.coordinateX;
-                newAddTail.coordinateY = tail.coordinateY + Section.UNIT_LENGTH;
+                newAddTailCoordinateY = tail.coordinateY + Section.UNIT_LENGTH;
                 break;
             case DIR.DOWN:
-                newAddTail.coordinateX = tail.coordinateX;
-                newAddTail.coordinateY = tail.coordinateY - Section.UNIT_LENGTH;
+                newAddTailCoordinateY = tail.coordinateY - Section.UNIT_LENGTH;
                 break;
         }
+
+        let newAddTail = new SnakeSection(newAddTailCoordinateX, newAddTailCoordinateY, 'blue', tailDirection);
         this.addSection(newAddTail);
         newAddTail.render(map);
     }
