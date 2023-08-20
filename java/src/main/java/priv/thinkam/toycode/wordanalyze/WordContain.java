@@ -1,4 +1,4 @@
-package priv.thinkam.toycode.bookmark;
+package priv.thinkam.toycode.wordanalyze;
 
 import org.apache.commons.lang3.StringUtils;
 
