@@ -7,10 +7,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -57,9 +54,17 @@ public class WordAnalyzeUtil {
 
     static List<String> findIn(String pathA, String pathB, boolean isIn) throws IOException {
         Set<String> referenceWordSet = getUniqueWordsSet(pathB);
+        return findIn(pathA, referenceWordSet, isIn);
+    }
 
+    static List<String> findIn(String pathA, Set<String> referenceWordSet, boolean isIn) throws IOException {
+        List<String> allWords = Files.readAllLines(Path.of(pathA));
+        return findIn(allWords, referenceWordSet, isIn);
+    }
+
+    static List<String> findIn(Collection<String> allWords, Set<String> referenceWordSet, boolean isIn) {
         List<String> resultWords = new ArrayList<>();
-        for (String word : Files.readAllLines(Path.of(pathA))) {
+        for (String word : allWords) {
             if (StringUtils.isBlank(word)) {
                 // skip
             } else {
@@ -78,7 +83,7 @@ public class WordAnalyzeUtil {
         return resultWords;
     }
 
-    private static Set<String> getUniqueWordsSet(String pathB) throws IOException {
+    static Set<String> getUniqueWordsSet(String pathB) throws IOException {
         return Files.readAllLines(Path.of(pathB)).stream()
                 .filter(StringUtils::isNotBlank)
                 .map(String::trim)
