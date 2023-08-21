@@ -44,6 +44,7 @@ public class WordStatisticsUtil {
             word = StringUtils.removeEndIgnoreCase(word, "'re");
             word = StringUtils.removeEndIgnoreCase(word, "'d");
             word = StringUtils.removeEndIgnoreCase(word, "'ve");
+            word = StringUtils.removeEndIgnoreCase(word, "'ll");
             if (StringUtils.length(word) > 1) {
                 words.add(word);
             } else {
