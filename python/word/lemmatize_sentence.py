@@ -38,3 +38,4 @@ print(lemmatizer.lemmatize("I am loving it")) #I am loving it
 print(lemmatizer.lemmatize("loving")) #loving
 print(lemmatizer.lemmatize("loving", "v")) #love
 print(lemmatize_sentence("I am loving it")) #I be love it
+print(lemmatize_sentence("representing shopping"))
