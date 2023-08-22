@@ -57,15 +57,20 @@ public class WordStatisticsUtil {
 
 
     public static void main(String[] args) throws Exception {
-        String filePath = "C:\\Users\\anyu.yang\\Downloads\\soho, new york - 英语 (自动生成).txt";
+//        String filePath = "C:\\Users\\thinkam\\DATA\\GoogleDrive\\英语视频学习\\soho, new york\\soho, new york - 英语 (自动生成).txt";
 //        extractWords(filePath).forEach(System.out::println);
 //        WordAnalyzeUtil.findIn( extractWords(filePath),
 //                WordAnalyzeUtil.getUniqueWordsSet("C:\\Users\\anyu.yang\\Downloads\\my words.txt")
 //                , false)
 //                .forEach(System.out::println);
 
-        WordAnalyzeUtil.findIn( extractWords(filePath),
-                        WordAnalyzeUtil.getUniqueWordsSet("C:\\Users\\anyu.yang\\Downloads\\COCA_20000.txt")
+//        WordAnalyzeUtil.findIn( extractWords(filePath),
+//                        WordAnalyzeUtil.getUniqueWordsSet("C:\\Users\\thinkam\\Downloads\\COCA_20000.txt")
+//                        , false)
+//                .forEach(System.out::println);
+
+        WordAnalyzeUtil.findIn(WordAnalyzeUtil.getUniqueWordsList("C:\\Users\\thinkam\\Downloads\\result.txt"),
+                        WordAnalyzeUtil.getUniqueWordsSet("C:\\Users\\thinkam\\Downloads\\COCA_20000.txt")
                         , false)
                 .forEach(System.out::println);
     }

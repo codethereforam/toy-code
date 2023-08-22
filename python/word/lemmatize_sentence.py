@@ -1,5 +1,6 @@
 # 参考: https://gaurav5430.medium.com/using-nltk-for-lemmatizing-sentences-c1bfff963258
 
+import re
 import nltk
 from nltk.stem import WordNetLemmatizer
 from nltk.corpus import wordnet
@@ -19,7 +20,7 @@ def nltk_tag_to_wordnet_tag(nltk_tag):
     else:
         return None
 
-def lemmatize_sentence(sentence):
+def lemmatize_sentence_list(sentence):
     #tokenize the sentence and find the POS tag for each token
     nltk_tagged = nltk.pos_tag(nltk.word_tokenize(sentence))
     #tuple of (token, wordnet_tag)
@@ -28,14 +29,31 @@ def lemmatize_sentence(sentence):
     for word, tag in wordnet_tagged:
         if tag is None:
             #if there is no available tag, append the token as is
-            lemmatized_sentence.append(word)
+            converted_word = word
         else:
             #else use the tag to lemmatize the token
-            lemmatized_sentence.append(lemmatizer.lemmatize(word, tag))
-    return " ".join(lemmatized_sentence)
+            converted_word = lemmatizer.lemmatize(word, tag)
+        # todo!: 在这里移除 's 等
+        lemmatized_sentence.append(converted_word.lower())
+    return lemmatized_sentence
 
-print(lemmatizer.lemmatize("I am loving it")) #I am loving it
-print(lemmatizer.lemmatize("loving")) #loving
-print(lemmatizer.lemmatize("loving", "v")) #love
-print(lemmatize_sentence("I am loving it")) #I be love it
-print(lemmatize_sentence("representing shopping"))
+def lemmatize_sentence(sentence):
+    return " ".join(lemmatize_sentence_list(sentence))
+
+def lemmatize_sentence_set(sentence):
+    return list(dict.fromkeys(lemmatize_sentence_list(sentence)))
+
+
+# print(lemmatizer.lemmatize("I am loving it")) #I am loving it
+# print(lemmatizer.lemmatize("loving")) #loving
+# print(lemmatizer.lemmatize("loving", "v")) #love
+# print(lemmatize_sentence("I am loving it")) #I be love it
+# print(lemmatize_sentence("representing shopping"))
+
+with open("C:\\Users\\thinkam\\DATA\\GoogleDrive\\英语视频学习\\soho, new york\\soho, new york - 英语 (自动生成).txt", 'r') as file:
+    article = file.read()
+sentence_set = lemmatize_sentence_set(article)
+word_pattern = re.compile("\\b[a-zA-Z'-]+\\b")
+# 过滤掉非单词
+sentence_set = [word for word in sentence_set if word_pattern.match(word)]
+print("\n".join(sentence_set))

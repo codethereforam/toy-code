@@ -91,6 +91,15 @@ public class WordAnalyzeUtil {
                 .collect(Collectors.toSet());
     }
 
+    static List<String> getUniqueWordsList(String filePath) throws IOException {
+        return Files.readAllLines(Path.of(filePath)).stream()
+                .filter(StringUtils::isNotBlank)
+                .map(String::trim)
+                .map(String::toLowerCase)
+                .distinct()
+                .collect(Collectors.toList());
+    }
+
     public static void main(String[] args) throws Exception {
 //        System.out.println(findDuplicateWord("C:\\Users\\thinkam\\Downloads\\COCA_20000.txt"));
 //        System.out.println(getUniqueWordsSet("C:\\Users\\thinkam\\Downloads\\COCA_20000 改.txt").size());
