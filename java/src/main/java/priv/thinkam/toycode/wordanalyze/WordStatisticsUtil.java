@@ -36,15 +36,8 @@ public class WordStatisticsUtil {
 
         while (matcher.find()) {
             String word = matcher.group();
+            // todo!: 过滤掉't 'm 're 'd 've 'll结尾的单词，因为都是简单单词
             word = StringUtils.removeEndIgnoreCase(word, "'s");
-            word = StringUtils.removeEndIgnoreCase(word, "won't");
-            word = StringUtils.removeEndIgnoreCase(word, "n't");
-            word = StringUtils.removeEndIgnoreCase(word, "'m");
-            word = StringUtils.removeEndIgnoreCase(word, "'t");
-            word = StringUtils.removeEndIgnoreCase(word, "'re");
-            word = StringUtils.removeEndIgnoreCase(word, "'d");
-            word = StringUtils.removeEndIgnoreCase(word, "'ve");
-            word = StringUtils.removeEndIgnoreCase(word, "'ll");
             if (StringUtils.length(word) > 1) {
                 words.add(word);
             } else {

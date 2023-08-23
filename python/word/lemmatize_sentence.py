@@ -4,6 +4,7 @@ import re
 import nltk
 from nltk.stem import WordNetLemmatizer
 from nltk.corpus import wordnet
+from typing import Set
 
 lemmatizer = WordNetLemmatizer()
 
@@ -40,20 +41,41 @@ def lemmatize_sentence_list(sentence):
 def lemmatize_sentence(sentence):
     return " ".join(lemmatize_sentence_list(sentence))
 
-def lemmatize_sentence_set(sentence):
-    return list(dict.fromkeys(lemmatize_sentence_list(sentence)))
-
-
 # print(lemmatizer.lemmatize("I am loving it")) #I am loving it
 # print(lemmatizer.lemmatize("loving")) #loving
 # print(lemmatizer.lemmatize("loving", "v")) #love
 # print(lemmatize_sentence("I am loving it")) #I be love it
 # print(lemmatize_sentence("representing shopping"))
 
-with open("C:\\Users\\thinkam\\DATA\\GoogleDrive\\英语视频学习\\soho, new york\\soho, new york - 英语 (自动生成).txt", 'r') as file:
-    article = file.read()
-sentence_set = lemmatize_sentence_set(article)
-word_pattern = re.compile("\\b[a-zA-Z'-]+\\b")
-# 过滤掉非单词
-sentence_set = [word for word in sentence_set if word_pattern.match(word)]
-print("\n".join(sentence_set))
+def lemmatize_sentence_set(sentence):
+    return list(dict.fromkeys(lemmatize_sentence_list(sentence)))
+
+def get_unique_words_set(file_path: str) -> Set[str]:
+    with open(file_path, "r", encoding="utf-8") as file:
+        lines = [line.strip().lower() for line in file if line.strip()]
+    return set(lines)
+
+
+article_file = "C:\\Users\\thinkam\\DATA\\GoogleDrive\\英语视频学习\\soho, new york\\soho, new york - 英语 (自动生成).txt"
+word_file = "C:\\Users\\thinkam\\Downloads\\my words.txt"
+
+
+def extract_word_from_article(file):
+    with open(file, 'r') as file:
+        article = file.read()
+    sentence_set = lemmatize_sentence_set(article)
+    word_pattern = re.compile("\\b[a-zA-Z'-]+\\b")
+    # 过滤掉非单词
+    return [word for word in sentence_set if word_pattern.match(word)]
+
+
+unique_words_set = get_unique_words_set(word_file)
+word_list = extract_word_from_article(article_file)
+# print("\n".join(unique_words_set))
+# print("\n".join(word_list)
+
+def find_elements_not_in_set(input_list, input_set):
+    result = [word for word in input_list if word.strip() and word.strip().lower() not in input_set]
+    return result
+
+print("\n".join(find_elements_not_in_set(word_list, unique_words_set)))
