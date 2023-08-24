@@ -8,3 +8,8 @@ my_set = {"apple", "banana", "mango"}
 
 result = find_elements_not_in_set(my_list, my_set)
 print("Elements not in the set:", result)
+
+
+my_list = [1, 2, 2, 3, 4, 4, 5]
+my_set = set(my_list)
+print(my_set)
