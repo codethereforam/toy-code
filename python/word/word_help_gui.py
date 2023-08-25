@@ -41,13 +41,25 @@ y_position = (screen_height - root.winfo_reqheight()) // 2
 # Set the geometry to center the window
 root.geometry(f"+{x_position}+{y_position}")
 
+
+def select_article():
+    article_entry.delete(0, tk.END)  # 清除已有内容
+    article_entry.insert(0, filedialog.askopenfilename())
+
+
 # Create and place the widgets
-article_button = tk.Button(root, text="选择文章", command=lambda: article_entry.insert(0, filedialog.askopenfilename()))
+article_button = tk.Button(root, text="选择文章", command=lambda: select_article())
 article_entry = tk.Entry(root)
 article_button.grid(row=0, column=0, padx=10, pady=10)
 article_entry.grid(row=0, column=1, padx=10, pady=10)
 
-wordlist_button = tk.Button(root, text="选择单词表", command=lambda: wordlist_entry.insert(0, filedialog.askopenfilename()))
+
+def select_wordlist():
+    wordlist_entry.delete(0, tk.END)  # 清除已有内容
+    wordlist_entry.insert(0, filedialog.askopenfilename())
+
+
+wordlist_button = tk.Button(root, text="选择单词表", command=lambda: select_wordlist())
 wordlist_entry = tk.Entry(root)
 wordlist_button.grid(row=1, column=0, padx=10, pady=10)
 wordlist_entry.grid(row=1, column=1, padx=10, pady=10)
