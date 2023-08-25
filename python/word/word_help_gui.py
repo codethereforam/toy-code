@@ -3,7 +3,7 @@
 import tkinter as tk
 from tkinter import filedialog
 
-from python.word.word_helper import find_article_words_not_in_word_list
+from word_helper import find_article_words_not_in_word_list
 
 
 def generate_unfamiliar_word():
