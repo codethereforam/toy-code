@@ -40,14 +40,11 @@ def get_lemmatized_word_list(sentence):
         else:
             # else use the tag to lemmatize the token
             converted_word = lemmatizer.lemmatize(word, tag)
-        # todo!: 在这里移除 's
-        result_word = converted_word.lower()
-        if is_desired_word(result_word):
-            lemmatized_sentence.append(result_word)
+        lemmatized_sentence.append(converted_word.lower())
     return lemmatized_sentence
 
 
-# 是否是需要的单词
+# @deprecated 是否是需要的单词
 def is_desired_word(word):
     for suffix in EXCLUDE_WORD_WITH_SUFFIX:
         if word.endswith(suffix):
