@@ -8,6 +8,7 @@ from word_helper import find_article_words_not_in_word_list
 
 def generate_unfamiliar_word():
     selected_article = article_entry.get()
+    # todo: 记住选择的生词路径
     selected_wordlist = wordlist_entry.get()
 
     if not selected_article or not selected_wordlist:
@@ -25,7 +26,9 @@ def generate_unfamiliar_word():
         selected_article_file_name, selected_article_file_extension = os.path.splitext(selected_article_base_name)
         initial_unfamiliar_words_filename = f"{selected_article_file_name}_生词{selected_article_file_extension}"
 
-        save_path = filedialog.asksaveasfilename(initialfile=initial_unfamiliar_words_filename, defaultextension=".txt",
+        save_path = filedialog.asksaveasfilename(initialfile=initial_unfamiliar_words_filename,
+                                                 initialdir=os.path.dirname(selected_article),
+                                                 defaultextension=".txt",
                                                  filetypes=[("Text files", "*.txt")])
 
         if save_path:
