@@ -45,6 +45,7 @@ root.geometry(f"+{x_position}+{y_position}")
 def select_article():
     article_entry.delete(0, tk.END)  # 清除已有内容
     article_entry.insert(0, filedialog.askopenfilename())
+    article_entry.xview_moveto(1)  # Scroll to the end
 
 
 # Create and place the widgets
@@ -57,6 +58,7 @@ article_entry.grid(row=0, column=1, padx=10, pady=10)
 def select_wordlist():
     wordlist_entry.delete(0, tk.END)  # 清除已有内容
     wordlist_entry.insert(0, filedialog.askopenfilename())
+    wordlist_entry.xview_moveto(1)  # Scroll to the end
 
 
 wordlist_button = tk.Button(root, text="选择单词表", command=lambda: select_wordlist())
