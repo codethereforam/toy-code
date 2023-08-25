@@ -1,15 +1,16 @@
-# 参考: https://gaurav5430.medium.com/using-nltk-for-lemmatizing-sentences-c1bfff963258
+# 单词助手：从文章中找出不在我的词汇表中的单词
+# 有两个文件和词汇表
+# 词汇表格式：每行一个单词，然后换行
+# 文章格式：多行或者一行都可以
+# lemmatize参考: https://gaurav5430.medium.com/using-nltk-for-lemmatizing-sentences-c1bfff963258
 
 import re
-
 import nltk
 from nltk.stem import WordNetLemmatizer
 from nltk.corpus import wordnet
 from typing import Set
 
 WORD_PATTERN = re.compile("\\b[a-zA-Z'-]+\\b")
-EXCLUDE_WORD_WITH_SUFFIX = ["'t", "'m", "'re", "'d", "'ve", "'ll"]
-
 lemmatizer = WordNetLemmatizer()
 
 
@@ -32,7 +33,7 @@ def get_lemmatized_word_list(sentence):
     nltk_tagged = nltk.pos_tag(nltk.word_tokenize(sentence))
     # tuple of (token, wordnet_tag)
     wordnet_tagged = map(lambda x: (x[0], nltk_tag_to_wordnet_tag(x[1])), nltk_tagged)
-    lemmatized_sentence = []
+    lemmatized_word_list = []
     for word, tag in wordnet_tagged:
         if tag is None:
             # if there is no available tag, append the token as is
@@ -40,27 +41,9 @@ def get_lemmatized_word_list(sentence):
         else:
             # else use the tag to lemmatize the token
             converted_word = lemmatizer.lemmatize(word, tag)
-        lemmatized_sentence.append(converted_word.lower())
-    return lemmatized_sentence
+        lemmatized_word_list.append(converted_word.lower())
+    return lemmatized_word_list
 
-
-# @deprecated 是否是需要的单词
-def is_desired_word(word):
-    for suffix in EXCLUDE_WORD_WITH_SUFFIX:
-        if word.endswith(suffix):
-            return False
-    return True
-
-
-def lemmatize_sentence(sentence):
-    return " ".join(get_lemmatized_word_list(sentence))
-
-
-# print(lemmatizer.lemmatize("I am loving it")) #I am loving it
-# print(lemmatizer.lemmatize("loving")) #loving
-# print(lemmatizer.lemmatize("loving", "v")) #love
-# print(lemmatize_sentence("I am loving it")) #I be love it
-# print(lemmatize_sentence("representing shopping"))
 
 def get_unique_ordered_lemmatized_word_list(sentence):
     return list(dict.fromkeys(get_lemmatized_word_list(sentence)))
@@ -87,12 +70,14 @@ def find_elements_not_in_set(input_list, input_set):
     return result
 
 
-ARTICLE_FILE = "C:\\Users\\thinkam\\DATA\\GoogleDrive\\英语视频学习\\soho, new york\\soho, new york - 英语 (自动生成).txt"
-WORD_FILE = "C:\\Users\\thinkam\\Downloads\\my words.txt"
+# ======== main ========
 
-unique_word_set = get_unique_word_set(WORD_FILE)
-word_list = extract_word_from_article(ARTICLE_FILE)
-# print("\n".join(unique_words_set))
-# print("\n".join(word_list)
+ARTICLE_FILE_PATH = "C:\\Users\\thinkam\\DATA\\GoogleDrive\\英语视频学习\\soho, new york\\soho, new york - 英语 (自动生成).txt"
+MY_WORD_FILE_PATH = "C:\\Users\\thinkam\\Downloads\\my words.txt"
 
-print("\n".join(find_elements_not_in_set(word_list, unique_word_set)))
+article_word_list = extract_word_from_article(ARTICLE_FILE_PATH)
+my_word_set = get_unique_word_set(MY_WORD_FILE_PATH)
+
+# print("\n".join(article_word_list))
+# print("\n".join(my_word_set))
+print("\n".join(find_elements_not_in_set(article_word_list, my_word_set)))
