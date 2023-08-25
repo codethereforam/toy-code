@@ -1,5 +1,5 @@
 # 单词助手GUI
-
+import os
 import tkinter as tk
 from tkinter import filedialog
 
@@ -15,12 +15,22 @@ def generate_unfamiliar_word():
         return
 
     try:
-        to_save_text = find_article_words_not_in_word_list(selected_article, selected_wordlist)
-        save_path = filedialog.asksaveasfilename(defaultextension=".txt", filetypes=[("Text files", "*.txt")])
+        unfamiliar_words_content = find_article_words_not_in_word_list(selected_article, selected_wordlist)
+        if not unfamiliar_words_content.strip():
+            result_label.config(text="选择的文章中没有生词")
+            return
+
+        # Generate the initial_unfamiliar_words_filename
+        selected_article_base_name = os.path.basename(selected_article)
+        selected_article_file_name, selected_article_file_extension = os.path.splitext(selected_article_base_name)
+        initial_unfamiliar_words_filename = f"{selected_article_file_name}_生词{selected_article_file_extension}"
+
+        save_path = filedialog.asksaveasfilename(initialfile=initial_unfamiliar_words_filename, defaultextension=".txt",
+                                                 filetypes=[("Text files", "*.txt")])
 
         if save_path:
             with open(save_path, 'w') as combined_file:
-                combined_file.write(to_save_text)
+                combined_file.write(unfamiliar_words_content)
             result_label.config(text="生词表保存成功")
         else:
             result_label.config(text="保存文件取消")
