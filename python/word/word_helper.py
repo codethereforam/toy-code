@@ -70,14 +70,17 @@ def find_elements_not_in_set(input_list, input_set):
     return result
 
 
+def find_article_words_not_in_word_list(article_file_path, my_word_file_path):
+    article_word_list = extract_word_from_article(article_file_path)
+    my_word_set = get_unique_word_set(my_word_file_path)
+    # print("\n".join(article_word_list))
+    # print("\n".join(my_word_set))
+    return "\n".join(find_elements_not_in_set(article_word_list, my_word_set))
+
+
 # ======== main ========
 
 ARTICLE_FILE_PATH = "C:\\Users\\thinkam\\DATA\\GoogleDrive\\英语视频学习\\soho, new york\\soho, new york - 英语 (自动生成).txt"
 MY_WORD_FILE_PATH = "C:\\Users\\thinkam\\Downloads\\my words.txt"
-
-article_word_list = extract_word_from_article(ARTICLE_FILE_PATH)
-my_word_set = get_unique_word_set(MY_WORD_FILE_PATH)
-
-# print("\n".join(article_word_list))
-# print("\n".join(my_word_set))
-print("\n".join(find_elements_not_in_set(article_word_list, my_word_set)))
+article_words_not_in_word_list = find_article_words_not_in_word_list(ARTICLE_FILE_PATH, MY_WORD_FILE_PATH)
+print(article_words_not_in_word_list)
