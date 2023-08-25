@@ -32,30 +32,35 @@ def generate_unfamiliar_word():
 root = tk.Tk()
 root.title("单词助手V1")
 
+# Calculate the screen width and height
+screen_width = root.winfo_screenwidth()
+screen_height = root.winfo_screenheight()
+# Calculate the x and y positions to center the window
+x_position = (screen_width - root.winfo_reqwidth()) // 2
+y_position = (screen_height - root.winfo_reqheight()) // 2
+# Set the geometry to center the window
+root.geometry(f"+{x_position}+{y_position}")
+
 # Create and place the widgets
-article_label = tk.Label(root, text="选择文章:")
-article_label.pack()
-
+article_button = tk.Button(root, text="选择文章", command=lambda: article_entry.insert(0, filedialog.askopenfilename()))
 article_entry = tk.Entry(root)
-article_entry.pack()
+article_button.grid(row=0, column=0, padx=10, pady=10)
+article_entry.grid(row=0, column=1, padx=10, pady=10)
 
-article_button = tk.Button(root, text="选择文件", command=lambda: article_entry.insert(0, filedialog.askopenfilename()))
-article_button.pack()
-
-wordlist_label = tk.Label(root, text="选择单词表:")
-wordlist_label.pack()
-
+wordlist_button = tk.Button(root, text="选择单词表", command=lambda: wordlist_entry.insert(0, filedialog.askopenfilename()))
 wordlist_entry = tk.Entry(root)
-wordlist_entry.pack()
+wordlist_button.grid(row=1, column=0, padx=10, pady=10)
+wordlist_entry.grid(row=1, column=1, padx=10, pady=10)
 
-wordlist_button = tk.Button(root, text="选择文件", command=lambda: wordlist_entry.insert(0, filedialog.askopenfilename()))
-wordlist_button.pack()
-
-generate_button = tk.Button(root, text="生成生词表", command=generate_unfamiliar_word)
-generate_button.pack()
+generate_button = tk.Button(root, text="生成生词表", bg="lightgray", command=generate_unfamiliar_word)
+generate_button.grid(row=2, column=0, columnspan=2, padx=10, pady=10)  # Use columnspan to span both columns
 
 result_label = tk.Label(root, text="")
-result_label.pack()
+result_label.grid(row=3, column=0, columnspan=2, padx=10, pady=10)  # Use columnspan to span both columns
+
+# Center the generate_button and result_label horizontally
+root.grid_rowconfigure(2, weight=1)
+root.grid_rowconfigure(3, weight=1)
 
 # Run the GUI event loop
 root.mainloop()
