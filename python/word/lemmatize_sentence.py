@@ -76,9 +76,11 @@ def get_unique_word_set(file_path: str) -> Set[str]:
 
 
 def extract_word_from_article(file_path):
-    with open(file_path, 'r') as file_path:
-        article = file_path.read()
-    unique_ordered_lemmatized_word_list = get_unique_ordered_lemmatized_word_list(article)
+    with open(file_path, 'r', encoding="utf-8") as file:
+        lines = file.readlines()
+    # 读取多行文本文件到一行，用空格分隔，否则每行末尾的单词处理可能有问题
+    merged_line_article = ' '.join(line.strip() for line in lines if line.strip())
+    unique_ordered_lemmatized_word_list = get_unique_ordered_lemmatized_word_list(merged_line_article)
     # 过滤掉非单词
     return [word for word in unique_ordered_lemmatized_word_list if WORD_PATTERN.match(word)]
 
