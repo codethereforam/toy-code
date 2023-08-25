@@ -93,8 +93,14 @@ root.geometry(f"+{x_position}+{y_position}")
 
 
 def select_article():
-    # todo: 打开文件默认用文本框里面的路径
-    article_path = filedialog.askopenfilename()
+    article_entry_text = article_entry.get()
+    if article_entry_text:
+        article_path = filedialog.askopenfilename(initialdir=os.path.dirname(article_entry_text),
+                                                  initialfile=os.path.basename(article_entry_text),
+                                                  title="选择文章")
+    else:
+        article_path = filedialog.askopenfilename()
+
     if article_path:
         article_entry.delete(0, tk.END)  # 清除已有内容
         article_entry.insert(0, article_path)
@@ -106,13 +112,20 @@ def select_article():
 article_button = tk.Button(root, text="选择文章", command=lambda: select_article())
 article_entry = tk.Entry(root)
 article_entry.insert(0, saved_article_path)
+article_entry.xview_moveto(1)  # Scroll to the end
 article_button.grid(row=0, column=0, padx=10, pady=10)
 article_entry.grid(row=0, column=1, padx=10, pady=10)
 
 
 def select_wordlist():
-    # todo: 打开文件默认用文本框里面的路径
-    wordlist_path = filedialog.askopenfilename()
+    wordlist_entry_text = wordlist_entry.get()
+    if wordlist_entry_text:
+        wordlist_path = filedialog.askopenfilename(initialdir=os.path.dirname(wordlist_entry_text),
+                                                   initialfile=os.path.basename(wordlist_entry_text),
+                                                   title="选择单词表")
+    else:
+        wordlist_path = filedialog.askopenfilename()
+
     if wordlist_path:
         wordlist_entry.delete(0, tk.END)  # 清除已有内容
         wordlist_entry.insert(0, wordlist_path)
@@ -123,6 +136,7 @@ def select_wordlist():
 wordlist_button = tk.Button(root, text="选择单词表", command=lambda: select_wordlist())
 wordlist_entry = tk.Entry(root)
 wordlist_entry.insert(0, saved_wordlist_path)
+wordlist_entry.xview_moveto(1)  # Scroll to the end
 wordlist_button.grid(row=1, column=0, padx=10, pady=10)
 wordlist_entry.grid(row=1, column=1, padx=10, pady=10)
 
