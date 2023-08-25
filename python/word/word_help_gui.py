@@ -1,9 +1,41 @@
 # 单词助手GUI
+# 打包命令:  pyinstaller --onefile --noconsole --name 单词助手V1 .\word_help_gui.py
+
 import os
 import tkinter as tk
 from tkinter import filedialog
 
 from word_helper import find_article_words_not_in_word_list
+
+CONFIG_PATH = ".word_help"
+
+
+def load_config():
+    config_path = os.path.expanduser("~/%s" % CONFIG_PATH)
+    config = {}
+
+    if os.path.exists(config_path):
+        with open(config_path, "r", encoding="utf-8") as f:
+            for line in f:
+                key, value = line.strip().split("=")
+                config[key] = value
+
+    return config
+
+
+def save_config(article_path, wordlist_path):
+    config = load_config()
+
+    if article_path:
+        config["article_path"] = article_path
+    if wordlist_path:
+        config["wordlist_path"] = wordlist_path
+
+    config_path = os.path.expanduser("~/%s" % CONFIG_PATH)
+
+    with open(config_path, "w", encoding="utf-8") as f:
+        for key, value in config.items():
+            f.write(f"{key}={value}\n")
 
 
 def generate_unfamiliar_word():
@@ -45,6 +77,11 @@ def generate_unfamiliar_word():
 root = tk.Tk()
 root.title("单词助手V1")
 
+# Load the saved paths from the config
+saved_paths = load_config()
+saved_article_path = saved_paths.get("article_path", "")
+saved_wordlist_path = saved_paths.get("wordlist_path", "")
+
 # Calculate the screen width and height
 screen_width = root.winfo_screenwidth()
 screen_height = root.winfo_screenheight()
@@ -56,26 +93,36 @@ root.geometry(f"+{x_position}+{y_position}")
 
 
 def select_article():
-    article_entry.delete(0, tk.END)  # 清除已有内容
-    article_entry.insert(0, filedialog.askopenfilename())
-    article_entry.xview_moveto(1)  # Scroll to the end
+    # todo: 打开文件默认用文本框里面的路径
+    article_path = filedialog.askopenfilename()
+    if article_path:
+        article_entry.delete(0, tk.END)  # 清除已有内容
+        article_entry.insert(0, article_path)
+        article_entry.xview_moveto(1)  # Scroll to the end
+        save_config(article_path, '')
 
 
 # Create and place the widgets
 article_button = tk.Button(root, text="选择文章", command=lambda: select_article())
 article_entry = tk.Entry(root)
+article_entry.insert(0, saved_article_path)
 article_button.grid(row=0, column=0, padx=10, pady=10)
 article_entry.grid(row=0, column=1, padx=10, pady=10)
 
 
 def select_wordlist():
-    wordlist_entry.delete(0, tk.END)  # 清除已有内容
-    wordlist_entry.insert(0, filedialog.askopenfilename())
-    wordlist_entry.xview_moveto(1)  # Scroll to the end
+    # todo: 打开文件默认用文本框里面的路径
+    wordlist_path = filedialog.askopenfilename()
+    if wordlist_path:
+        wordlist_entry.delete(0, tk.END)  # 清除已有内容
+        wordlist_entry.insert(0, wordlist_path)
+        wordlist_entry.xview_moveto(1)  # Scroll to the end
+        save_config('', wordlist_path)
 
 
 wordlist_button = tk.Button(root, text="选择单词表", command=lambda: select_wordlist())
 wordlist_entry = tk.Entry(root)
+wordlist_entry.insert(0, saved_wordlist_path)
 wordlist_button.grid(row=1, column=0, padx=10, pady=10)
 wordlist_entry.grid(row=1, column=1, padx=10, pady=10)
 
