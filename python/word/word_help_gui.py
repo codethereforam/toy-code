@@ -107,48 +107,33 @@ y_position = (screen_height - root.winfo_reqheight()) // 2
 root.geometry(f"+{x_position}+{y_position}")
 
 
-def select_article():
-    article_entry_text = article_entry.get()
-    if article_entry_text:
-        article_path = filedialog.askopenfilename(initialdir=os.path.dirname(article_entry_text),
-                                                  initialfile=os.path.basename(article_entry_text),
-                                                  title="选择文章")
+def select_file(entry, entry_config_key, open_filename_title):
+    entry_text = entry.get()
+    if entry_text:
+        file_path = filedialog.askopenfilename(initialdir=os.path.dirname(entry_text),
+                                               initialfile=os.path.basename(entry_text),
+                                               title=open_filename_title)
     else:
-        article_path = filedialog.askopenfilename()
+        file_path = filedialog.askopenfilename()
 
-    if article_path:
-        article_entry.delete(0, tk.END)  # 清除已有内容
-        article_entry.insert(0, article_path)
-        article_entry.xview_moveto(1)  # Scroll to the end
-        save_config(CONFIG_ARTICLE_PATH, article_path)
+    if file_path:
+        entry.delete(0, tk.END)  # 清除已有内容
+        entry.insert(0, file_path)
+        entry.xview_moveto(1)  # Scroll to the end
+        save_config(entry_config_key, file_path)
 
 
 # Create and place the widgets
-article_button = tk.Button(root, text="选择文章", command=lambda: select_article())
+article_button = tk.Button(root, text="选择文章",
+                           command=lambda: select_file(article_entry, CONFIG_ARTICLE_PATH, "选择文章"))
 article_entry = tk.Entry(root)
 article_entry.insert(0, saved_article_path)
 article_entry.xview_moveto(1)  # Scroll to the end
 article_button.grid(row=0, column=0, padx=10, pady=10)
 article_entry.grid(row=0, column=1, padx=10, pady=10)
 
-
-def select_wordlist():
-    wordlist_entry_text = wordlist_entry.get()
-    if wordlist_entry_text:
-        wordlist_path = filedialog.askopenfilename(initialdir=os.path.dirname(wordlist_entry_text),
-                                                   initialfile=os.path.basename(wordlist_entry_text),
-                                                   title="选择单词表")
-    else:
-        wordlist_path = filedialog.askopenfilename()
-
-    if wordlist_path:
-        wordlist_entry.delete(0, tk.END)  # 清除已有内容
-        wordlist_entry.insert(0, wordlist_path)
-        wordlist_entry.xview_moveto(1)  # Scroll to the end
-        save_config(CONFIG_WORDLIST_PATH, wordlist_path)
-
-
-wordlist_button = tk.Button(root, text="选择单词表", command=lambda: select_wordlist())
+wordlist_button = tk.Button(root, text="选择单词表",
+                            command=lambda: select_file(wordlist_entry, CONFIG_WORDLIST_PATH, "选择单词表"))
 wordlist_entry = tk.Entry(root)
 wordlist_entry.insert(0, saved_wordlist_path)
 wordlist_entry.xview_moveto(1)  # Scroll to the end
