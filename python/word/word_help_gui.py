@@ -88,6 +88,22 @@ def open_unfamiliar_word():
         result_label.config(text="请先生成生词表")
 
 
+def select_file(entry, entry_config_key, open_filename_title):
+    entry_text = entry.get()
+    if entry_text:
+        file_path = filedialog.askopenfilename(initialdir=os.path.dirname(entry_text),
+                                               initialfile=os.path.basename(entry_text),
+                                               title=open_filename_title)
+    else:
+        file_path = filedialog.askopenfilename()
+
+    if file_path:
+        entry.delete(0, tk.END)  # 清除已有内容
+        entry.insert(0, file_path)
+        entry.xview_moveto(1)  # Scroll to the end
+        save_config(entry_config_key, file_path)
+
+
 # Create the main window
 root = tk.Tk()
 root.title("单词助手V1")
@@ -105,23 +121,6 @@ x_position = (screen_width - root.winfo_reqwidth()) // 2
 y_position = (screen_height - root.winfo_reqheight()) // 2
 # Set the geometry to center the window
 root.geometry(f"+{x_position}+{y_position}")
-
-
-def select_file(entry, entry_config_key, open_filename_title):
-    entry_text = entry.get()
-    if entry_text:
-        file_path = filedialog.askopenfilename(initialdir=os.path.dirname(entry_text),
-                                               initialfile=os.path.basename(entry_text),
-                                               title=open_filename_title)
-    else:
-        file_path = filedialog.askopenfilename()
-
-    if file_path:
-        entry.delete(0, tk.END)  # 清除已有内容
-        entry.insert(0, file_path)
-        entry.xview_moveto(1)  # Scroll to the end
-        save_config(entry_config_key, file_path)
-
 
 # Create and place the widgets
 article_button = tk.Button(root, text="选择文章",
