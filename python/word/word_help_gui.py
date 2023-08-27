@@ -1,5 +1,6 @@
 # 单词助手GUI
 # 打包命令:  pyinstaller --onefile --noconsole --name 单词助手V1 .\word_help_gui.py
+# todo!: 加按钮打开生词表
 
 import os
 import tkinter as tk
@@ -7,11 +8,17 @@ from tkinter import filedialog
 
 from word_helper import find_article_words_not_in_word_list
 
-CONFIG_PATH = ".word_help"
+CONFIG_FILE_NAME = ".word_help"
+CONFIG_ARTICLE_PATH = "article_path"
+CONFIG_WORDLIST_PATH = "wordlist_path"
+
+
+def get_config_path():
+    return os.path.expanduser("~/%s" % CONFIG_FILE_NAME)
 
 
 def load_config():
-    config_path = os.path.expanduser("~/%s" % CONFIG_PATH)
+    config_path = get_config_path()
     config = {}
 
     if os.path.exists(config_path):
@@ -23,24 +30,20 @@ def load_config():
     return config
 
 
-def save_config(article_path, wordlist_path):
+def save_config(config_key, config_value):
+    if not config_key or not config_value:
+        return
+
     config = load_config()
+    config[config_key] = config_value
 
-    if article_path:
-        config["article_path"] = article_path
-    if wordlist_path:
-        config["wordlist_path"] = wordlist_path
-
-    config_path = os.path.expanduser("~/%s" % CONFIG_PATH)
-
-    with open(config_path, "w", encoding="utf-8") as f:
+    with open(get_config_path(), "w", encoding="utf-8") as f:
         for key, value in config.items():
             f.write(f"{key}={value}\n")
 
 
 def generate_unfamiliar_word():
     selected_article = article_entry.get()
-    # todo: 记住选择的生词路径
     selected_wordlist = wordlist_entry.get()
 
     if not selected_article or not selected_wordlist:
@@ -64,7 +67,7 @@ def generate_unfamiliar_word():
                                                  filetypes=[("Text files", "*.txt")])
 
         if save_path:
-            with open(save_path, 'w') as combined_file:
+            with open(save_path, 'w', encoding="utf-8") as combined_file:
                 combined_file.write(unfamiliar_words_content)
             result_label.config(text="生词表保存成功")
         else:
@@ -78,9 +81,9 @@ root = tk.Tk()
 root.title("单词助手V1")
 
 # Load the saved paths from the config
-saved_paths = load_config()
-saved_article_path = saved_paths.get("article_path", "")
-saved_wordlist_path = saved_paths.get("wordlist_path", "")
+saved_config = load_config()
+saved_article_path = saved_config.get(CONFIG_ARTICLE_PATH, "")
+saved_wordlist_path = saved_config.get(CONFIG_WORDLIST_PATH, "")
 
 # Calculate the screen width and height
 screen_width = root.winfo_screenwidth()
@@ -105,7 +108,7 @@ def select_article():
         article_entry.delete(0, tk.END)  # 清除已有内容
         article_entry.insert(0, article_path)
         article_entry.xview_moveto(1)  # Scroll to the end
-        save_config(article_path, '')
+        save_config(CONFIG_ARTICLE_PATH, article_path)
 
 
 # Create and place the widgets
@@ -130,7 +133,7 @@ def select_wordlist():
         wordlist_entry.delete(0, tk.END)  # 清除已有内容
         wordlist_entry.insert(0, wordlist_path)
         wordlist_entry.xview_moveto(1)  # Scroll to the end
-        save_config('', wordlist_path)
+        save_config(CONFIG_WORDLIST_PATH, wordlist_path)
 
 
 wordlist_button = tk.Button(root, text="选择单词表", command=lambda: select_wordlist())

@@ -2,7 +2,8 @@
 # 有两个文件和词汇表
 # 词汇表格式：每行一个单词，然后换行
 # 文章格式：多行或者一行都可以
-# lemmatize参考: https://gaurav5430.medium.com/using-nltk-for-lemmatizing-sentences-c1bfff963258
+# lemmatize参考1: https://gaurav5430.medium.com/using-nltk-for-lemmatizing-sentences-c1bfff963258
+# 参考2: https://simonhessner.de/lemmatize-whole-sentences-with-python-and-nltks-wordnetlemmatizer
 
 import re
 import nltk
