@@ -1,9 +1,9 @@
 # 单词助手GUI
 # 打包命令:  pyinstaller --onefile --noconsole --name 单词助手V1 .\word_help_gui.py
-# todo!: 加按钮打开生词表
 
 import os
 import tkinter as tk
+import webbrowser
 from tkinter import filedialog
 
 from word_helper import find_article_words_not_in_word_list
@@ -11,6 +11,9 @@ from word_helper import find_article_words_not_in_word_list
 CONFIG_FILE_NAME = ".word_help"
 CONFIG_ARTICLE_PATH = "article_path"
 CONFIG_WORDLIST_PATH = "wordlist_path"
+
+# 生成的生词文件路径
+unfamiliar_word_path = ''
 
 
 def get_config_path():
@@ -69,11 +72,20 @@ def generate_unfamiliar_word():
         if save_path:
             with open(save_path, 'w', encoding="utf-8") as combined_file:
                 combined_file.write(unfamiliar_words_content)
+            global unfamiliar_word_path
+            unfamiliar_word_path = save_path
             result_label.config(text="生词表保存成功")
         else:
             result_label.config(text="保存文件取消")
     except Exception as e:
         result_label.config(text=f"Error: {str(e)}")
+
+
+def open_unfamiliar_word():
+    if unfamiliar_word_path.strip():
+        webbrowser.open(unfamiliar_word_path)
+    else:
+        result_label.config(text="请先生成生词表")
 
 
 # Create the main window
@@ -144,14 +156,13 @@ wordlist_button.grid(row=1, column=0, padx=10, pady=10)
 wordlist_entry.grid(row=1, column=1, padx=10, pady=10)
 
 generate_button = tk.Button(root, text="生成生词表", bg="lightgray", command=generate_unfamiliar_word)
-generate_button.grid(row=2, column=0, columnspan=2, padx=10, pady=10)  # Use columnspan to span both columns
+open_unfamiliar_button = tk.Button(root, text="打开生词表", bg="lightgray", command=open_unfamiliar_word)
+generate_button.grid(row=2, column=0, padx=10, pady=10)  # Use columnspan to span both columns
+open_unfamiliar_button.grid(row=2, column=1, padx=10, pady=10)  # Use columnspan to span both columns
 
 result_label = tk.Label(root, text="")
 result_label.grid(row=3, column=0, columnspan=2, padx=10, pady=10)  # Use columnspan to span both columns
-
-# Center the generate_button and result_label horizontally
-root.grid_rowconfigure(2, weight=1)
-root.grid_rowconfigure(3, weight=1)
+root.grid_rowconfigure(3, weight=1)  # Center result_label horizontally
 
 # Run the GUI event loop
 root.mainloop()
