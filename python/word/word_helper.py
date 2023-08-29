@@ -42,7 +42,10 @@ def get_lemmatized_word_list(sentence):
         else:
             # else use the tag to lemmatize the token
             converted_word = lemmatizer.lemmatize(word, tag)
-        lemmatized_word_list.append(converted_word.lower())
+        result_word = converted_word.strip().lower()
+        # 长度大于1的单词才需要
+        if len(result_word) > 1:
+            lemmatized_word_list.append(result_word)
     return lemmatized_word_list
 
 
