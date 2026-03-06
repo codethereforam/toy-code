@@ -45,6 +45,9 @@ public class AppointmentNotice260305 {
     // TODO: 配置项 - 执行间隔（秒）
     private static final long INTERVAL_SECONDS = 30;
 
+    private static int notifyCount = 0;
+    private static final int MAX_NOTIFY_COUNT = 100;
+
     private static final ObjectMapper MAPPER = new ObjectMapper()
 //            .registerModule(new JavaTimeModule()
 //                    .addSerializer(LocalDateTime.class, new LocalDateTimeSerializer(DEFAULT_DATETIME_FORMATTER))
@@ -89,8 +92,14 @@ public class AppointmentNotice260305 {
         if (availableAppointments.isEmpty()) {
             System.out.println("未发现可预约号源，继续监控..., time: " + LocalDateTime.now());
         } else {
-            sendEmail(availableAppointments);
-            System.out.println("发现可预约号源，邮件已发送！,availableAppointments: " + availableAppointments);
+            if (notifyCount >= MAX_NOTIFY_COUNT) {
+                System.out.println("已达最大通知次数(" + MAX_NOTIFY_COUNT + ")，不再发送邮件, time: " + LocalDateTime.now());
+                System.exit(1);
+            } else {
+                sendEmail(availableAppointments);
+                notifyCount++;
+                System.out.println("发现可预约号源，邮件已发送！第" + notifyCount + "次, availableAppointments: " + availableAppointments);
+            }
         }
     }
 
