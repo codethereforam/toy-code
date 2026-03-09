@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import lombok.Data;
+import org.apache.commons.collections4.CollectionUtils;
 
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
@@ -37,10 +38,16 @@ public class AppointmentNotice260305 {
     private static final String API_URL = "https://mbapp.jsph.org.cn/mobile/online/GetReservationScheduleNew_H5.do?mCUs1Q7w=0uVrXpAlqWttALnFkdxIuwweYMK0o5FQcgh36Tg.uSs0dA3POq1IU.zyKL_WWqO94zSGI.7pHwnr7HXSFV9nvHX51i0T8GOlmE2WyPqihr41I3UmCH0KcbG";
     private static final String REQUEST_BODY = "{\"content\":{\"ResourceTypeID\":\"002\",\"DiagOrgID\":\"\",\"ResourceID\":\"7286\",\"HospID\":\"0101|0102|0106\",\"ReserDate\":\"\"}}";
 
-    // TODO: 配置项 - 预约日期范围（3月18日-3月24日）
+    // TODO: 配置项 - 预约日期过滤（二选一，另一个设为null或空）
+    // 方式1：日期范围
     private static final LocalDate START_DATE = LocalDate.of(2026, 3, 18);
     private static final LocalDate END_DATE = LocalDate.of(2026, 3, 24);
-    //private static final LocalDate END_DATE = LocalDate.of(2026, 4, 1);
+    // 方式2：指定多个日期（设为null则使用方式1的范围，如果同时设置了范围和具体日期，则优先使用具体日期）
+    //private static final List<LocalDate> SPECIFIC_DATES = null;
+    private static final List<LocalDate> SPECIFIC_DATES = List.of(
+            LocalDate.of(2026, 3, 19),
+            LocalDate.of(2026, 3, 22)
+    );
 
     // TODO: 配置项 - 执行间隔（秒）
     private static final long INTERVAL_SECONDS = 30;
@@ -107,7 +114,9 @@ public class AppointmentNotice260305 {
         LocalDate curDate = LocalDate.parse(appointment.curDate, DATE_FORMATTER);
         int remainAmount = Integer.parseInt(appointment.remainAmount);
 
-        boolean inRange = !curDate.isBefore(START_DATE) && !curDate.isAfter(END_DATE);
+        boolean inRange = CollectionUtils.isNotEmpty(SPECIFIC_DATES)
+                ? SPECIFIC_DATES.contains(curDate)
+                : !curDate.isBefore(START_DATE) && !curDate.isAfter(END_DATE);
         boolean hasRemain = remainAmount > 0;
 
         if (inRange && hasRemain) {
