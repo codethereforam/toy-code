@@ -3,8 +3,8 @@
 这组示例按“从易到难”排列，目标是先建立直觉：
 
 1. `01-cps.scm`：超渐进版 CPS（Step1 到 Step4，适合第一次接触）
-2. `02-callcc.scm`：理解捕获/恢复执行现场（提前退出、可恢复计算点）
-3. `03-shift-reset.rkt`：理解“定界 continuation”（局部捕获）
+2. `02-callcc.scm`：白话理解 call/cc（提前退出、多层循环跳出、深层失败直返）
+3. `03-shift-reset.rkt`：白话理解 shift/reset（只在 reset 范围内捕获后续）
 
 ---
 
@@ -19,8 +19,8 @@
 ## 建议学习顺序（30~60 分钟）
 
 1. 先跑 `01-cps.scm`，严格按 Step1 -> Step4 看，不要跳
-2. 再看 `02-callcc.scm`，先理解 `find-first-even` 的提前退出，再看“多层循环一次跳出”
-3. 最后看 `03-shift-reset.rkt`，重点理解 `k` 是如何“复用 continuation” 的
+2. 再看 `02-callcc.scm`，按例子 1 -> 2 -> 3 看，先抓住“exit=超级 return”
+3. 最后看 `03-shift-reset.rkt`，按例子 1 -> 2 -> 3 看，先把 `k` 当“洞位函数”
 
 ---
 
