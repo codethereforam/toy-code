@@ -29,3 +29,6 @@ some toy code when I learn programming
 
 ## 4. 工具类
 - [树工具类](/java/src/main/java/priv/thinkam/toycode/tree)
+
+## 5. continuation 与并发计算入门（Scheme）
+- [continuation 入门示例](/scheme/continuation)
