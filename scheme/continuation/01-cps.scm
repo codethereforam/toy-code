@@ -71,6 +71,29 @@
        (lambda (tail-sum)
          (k (+ (car xs) tail-sum))))))
 
+; ---------------- 这段最容易卡住：补一个“执行对照图” ----------------
+; 以 (1 2 3) 为例：
+;
+; [普通递归]
+;   (+ 1 (sum '(2 3)))
+;   (+ 1 (+ 2 (sum '(3))))
+;   (+ 1 (+ 2 (+ 3 (sum '()))))
+;   (+ 1 (+ 2 (+ 3 0)))
+;   => 6
+;
+; 直觉：普通递归把“还没做的加法”压在调用栈里，等 return 时再一层层做。
+;
+; [CPS]
+;   初始 k0(v) = v
+;   看到 1，生成 k1(v) = k0(1 + v)
+;   看到 2，生成 k2(v) = k1(2 + v)
+;   看到 3，生成 k3(v) = k2(3 + v)
+;   到空表后，不 return 0，而是执行 (k3 0)
+;     k3(0) -> k2(3) -> k1(5) -> k0(6) -> 6
+;
+; 直觉：CPS 不靠 return 回来，而是把“后续要做的事”打包进 k，最后统一执行。
+; ----------------------------------------------------------------
+
 ; 先用恒等 k，验证和 direct 一样
 (display "Step3 sum-list-cps identity k      => ")
 (display (sum-list-cps '(1 2 3 4 5) (lambda (v) v))) ; 15
@@ -79,6 +102,9 @@
 ; 再用自定义 k：求和后额外 +100
 (display "Step3 sum-list-cps custom k (+100) => ")
 (display (sum-list-cps '(1 2 3 4 5) (lambda (v) (+ v 100)))) ; 115
+(newline)
+(display "Step3 sum-list-cps '(1 2 3) identity => ")
+(display (sum-list-cps '(1 2 3) (lambda (v) v))) ; 6
 (newline)
 (newline)
 
