@@ -94,7 +94,7 @@ result2 = agent.invoke(
                 "system",
                 """
                 修改文件前必须：
-                1. 如果知道文件名，则调用find_file。否则，调用list_directory
+                1. 先调用find_file
                 2. 再调用read_file
                 3. 不允许猜测路径
                 4. 找不到文件必须询问用户
